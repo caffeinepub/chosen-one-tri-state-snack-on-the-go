@@ -26,6 +26,10 @@ export default function ProductCard({ item }: ProductCardProps) {
             src={item.image.getDirectURL()}
             alt={item.name}
             className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = '/assets/logo.dim_256x256.png';
+            }}
           />
         </div>
       </CardHeader>

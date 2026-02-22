@@ -5,6 +5,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Separator } from '@/components/ui/separator';
+import { Label } from '@/components/ui/label';
 import { useGetSnackItem, useAddToCart } from '../hooks/useQueries';
 import { useUserId } from '../hooks/useCart';
 import { toast } from 'sonner';
@@ -109,62 +111,65 @@ export default function ProductDetail() {
                 src={item.image.getDirectURL()}
                 alt={item.name}
                 className="h-full w-full object-cover"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = '/assets/logo.dim_256x256.png';
+                }}
               />
             </div>
           </Card>
         </div>
 
         {/* Product Details */}
-        <div className="flex flex-col space-y-6">
-          <div>
-            <h1 className="text-4xl font-bold text-foreground mb-3 font-['Pacifico']">
-              {item.name}
-            </h1>
-            <Badge variant="secondary" className="text-2xl font-bold px-4 py-2">
-              ${priceInDollars}
-            </Badge>
-          </div>
-
-          <div className="prose prose-sm max-w-none">
-            <p className="text-base text-muted-foreground leading-relaxed">
-              {item.description}
-            </p>
-          </div>
-
-          <div className="border-t border-border pt-6 space-y-4">
+        <div className="flex flex-col">
+          <div className="space-y-4 flex-1">
             <div>
-              <label className="text-sm font-semibold text-foreground mb-2 block">
-                Quantity
-              </label>
-              <div className="flex items-center border-2 border-border rounded-lg overflow-hidden w-fit">
+              <h1 className="text-3xl font-bold text-foreground mb-2">{item.name}</h1>
+              <Badge variant="secondary" className="text-xl font-bold px-4 py-2">
+                ${priceInDollars}
+              </Badge>
+            </div>
+
+            <div className="pt-4">
+              <h2 className="text-lg font-semibold text-foreground mb-2">Description</h2>
+              <p className="text-muted-foreground leading-relaxed">{item.description}</p>
+            </div>
+
+            <Separator className="my-6" />
+
+            {/* Quantity Selector */}
+            <div className="space-y-3">
+              <Label className="text-base font-semibold">Quantity</Label>
+              <div className="flex items-center gap-4">
                 <Button
-                  variant="ghost"
+                  variant="outline"
                   size="icon"
-                  className="h-12 w-12 rounded-none hover:bg-primary/10"
                   onClick={decrementQuantity}
                   disabled={quantity <= 1}
+                  className="h-10 w-10"
                 >
-                  <Minus className="h-5 w-5" />
+                  <Minus className="h-4 w-4" />
                 </Button>
-                <span className="px-6 font-bold text-lg min-w-[4rem] text-center">
-                  {quantity}
-                </span>
+                <span className="text-2xl font-semibold w-12 text-center">{quantity}</span>
                 <Button
-                  variant="ghost"
+                  variant="outline"
                   size="icon"
-                  className="h-12 w-12 rounded-none hover:bg-primary/10"
                   onClick={incrementQuantity}
+                  className="h-10 w-10"
                 >
-                  <Plus className="h-5 w-5" />
+                  <Plus className="h-4 w-4" />
                 </Button>
               </div>
             </div>
+          </div>
 
+          {/* Add to Cart Button */}
+          <div className="mt-8">
             <Button
               size="lg"
-              className="w-full text-lg h-14 font-semibold"
+              className="w-full text-lg py-6"
               onClick={handleAddToCart}
-              disabled={addToCart.isPending || !userId}
+              disabled={addToCart.isPending}
             >
               {addToCart.isPending ? (
                 <>
@@ -178,13 +183,6 @@ export default function ProductDetail() {
                 </>
               )}
             </Button>
-
-            <div className="bg-muted/50 rounded-lg p-4 border border-border">
-              <p className="text-sm text-muted-foreground">
-                <strong className="text-foreground">Total:</strong> $
-                {(Number(item.price) * quantity / 100).toFixed(2)}
-              </p>
-            </div>
           </div>
         </div>
       </div>

@@ -1,11 +1,12 @@
 # Specification
 
 ## Summary
-**Goal:** Remove product deletion capability from public-facing views to prevent unauthorized deletion of catalog items.
+**Goal:** Fix the image upload functionality to ensure snack product images can be successfully uploaded, stored, and displayed.
 
 **Planned changes:**
-- Remove delete button and delete functionality from ProductCard component
-- Remove delete button and delete functionality from ProductDetail page
-- Preserve admin delete capability in SnackManagement admin page
+- Debug and fix the ImageUpload.tsx component to properly handle file selection, preview, and upload progress
+- Verify backend blob storage in main.mo correctly receives and stores image data
+- Ensure Admin page form integration properly handles upload completion and errors
+- Add clear error messaging for failed uploads with retry options
 
-**User-visible outcome:** Public users can view products and add them to cart but cannot delete products from the catalog or detail pages. Only admin users retain product deletion capability through the admin panel.
+**User-visible outcome:** Admins can successfully upload snack product images through the Admin page, and these images display correctly in the product catalog and detail views.

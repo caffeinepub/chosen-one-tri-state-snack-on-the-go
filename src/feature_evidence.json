@@ -2,10 +2,13 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-remove-the-delete-button-and-delete-functionality-from-the-productcard-component-so-public-users-cannot-delete-products-from-the-catalog-view",
-      "featureTitle": "Remove the delete button and delete functionality from the ProductCard component so public users cannot delete products from the catalog view",
+      "featureId": "feature-debug-and-fix-the-image-upload-component-imageupload-tsx-to-ensure-images-are-successfully-uploaded-and-stored-in-the-backend",
+      "featureTitle": "Debug and fix the image upload component (ImageUpload.tsx) to ensure images are successfully uploaded and stored in the backend",
       "files": [
-        "frontend/src/components/ProductCard.tsx"
+        "frontend/src/components/ImageUpload.tsx",
+        "frontend/src/components/ProductCard.tsx",
+        "frontend/src/pages/Admin.tsx",
+        "frontend/src/pages/ProductDetail.tsx"
       ],
       "components": [
         "blob-storage@4.0.0",
@@ -17,6 +20,26 @@
       ],
       "testIds": [
         "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-ensure-the-admin-page-snack-creation-form-properly-integrates-with-the-imageupload-component-and-handles-upload-errors-gracefully",
+      "featureTitle": "Ensure the Admin page snack creation form properly integrates with the ImageUpload component and handles upload errors gracefully",
+      "files": [
+        "frontend/src/components/ImageUpload.tsx",
+        "frontend/src/pages/Admin.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
       ],
       "confidence": "high"
     }

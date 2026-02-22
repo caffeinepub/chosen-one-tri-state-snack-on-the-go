@@ -1,37 +1,61 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Remove public product deletion capability",
+  "title": "Fix Image Upload Functionality",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Remove the delete button and delete functionality from the ProductCard component so public users cannot delete products from the catalog view",
+      "summary": "Debug and fix the ImageUpload component to ensure images are successfully uploaded and stored, then verified in ProductCard and ProductDetail displays",
       "acceptanceCriteria": [
-        "ProductCard component no longer displays a delete button",
-        "Public users cannot trigger product deletion from the catalog page",
-        "Admin users can still delete products through the SnackManagement admin page"
+        "Image files can be selected through the file input",
+        "Selected images display correctly in the preview",
+        "Upload progress indicator shows accurate progress",
+        "Images are successfully converted to ExternalBlob format",
+        "Backend receives and stores the image blob data correctly",
+        "Uploaded images can be retrieved and displayed in ProductCard and ProductDetail components"
       ],
       "file_operations": [
         {
+          "path": "frontend/src/components/ImageUpload.tsx",
+          "operation": "modify",
+          "description": "Fix the ExternalBlob creation and upload progress tracking. Verify the blob-storage component's usage instructions before implementing. Ensure proper error handling for file selection, preview rendering, and blob conversion. Add detailed logging to track upload state transitions and identify failure points in the upload pipeline."
+        },
+        {
+          "path": "frontend/src/pages/Admin.tsx",
+          "operation": "modify",
+          "description": "Update the ImageUpload integration to properly handle the ExternalBlob returned from the component. Ensure the form submission correctly passes the blob to the addSnackItem backend method. Add error boundary and loading states during image upload. Verify proper state management between ImageUpload component and form submission."
+        },
+        {
           "path": "frontend/src/components/ProductCard.tsx",
           "operation": "modify",
-          "description": "Remove the delete button, delete confirmation dialog, and all associated delete functionality from the ProductCard component. Keep the image, name, description, price display, and the 'View Details' button intact. This ensures public users viewing the catalog cannot delete products while maintaining all other product browsing capabilities."
+          "description": "Verify that ExternalBlob images retrieved from backend are properly displayed using getDirectURL() method. Add error handling for missing or failed image loads. Include fallback image display for broken blob references."
+        },
+        {
+          "path": "frontend/src/pages/ProductDetail.tsx",
+          "operation": "modify",
+          "description": "Verify that ExternalBlob images retrieved from backend are properly displayed using getDirectURL() method for the detailed product view. Add error handling for missing or failed image loads with appropriate fallback UI."
         }
       ]
     },
     {
-      "id": "REQ-2",
-      "summary": "Remove the delete button and delete functionality from the ProductDetail page so public users cannot delete products from the detail view",
+      "id": "REQ-3",
+      "summary": "Ensure the Admin page snack creation form properly integrates with ImageUpload component and handles upload errors gracefully",
       "acceptanceCriteria": [
-        "ProductDetail page does not display a delete button",
-        "Public users cannot trigger product deletion from the product detail page",
-        "Admin users retain delete capability through the SnackManagement admin page"
+        "Form submission waits for image upload completion",
+        "Upload errors display clear error messages to admin users",
+        "Successful uploads enable the form submit button",
+        "Failed uploads prevent form submission and show retry options"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/pages/ProductDetail.tsx",
+          "path": "frontend/src/pages/Admin.tsx",
           "operation": "modify",
-          "description": "Remove the delete button and all associated delete functionality from the ProductDetail page. Preserve the product image, description, price display, quantity selector, and add-to-cart functionality. This restricts product deletion to the admin-only SnackManagement page while keeping all product viewing and cart features available to public users."
+          "description": "Add comprehensive error handling for ImageUpload failures. Implement form validation that prevents submission until image upload completes successfully. Display clear error messages using toast notifications or inline alerts when upload fails. Add retry mechanism for failed uploads. Disable submit button during upload and enable only after successful blob creation. Track upload state to coordinate form submission timing."
+        },
+        {
+          "path": "frontend/src/components/ImageUpload.tsx",
+          "operation": "modify",
+          "description": "Expose upload state (idle, uploading, success, error) to parent components through callback props. Provide clear error messages for different failure scenarios (file size, format, network). Implement retry functionality that allows re-attempting failed uploads without resetting the component."
         }
       ]
     }

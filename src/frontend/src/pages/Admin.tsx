@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
-import ImageUpload from '../components/ImageUpload';
+import ImageUpload, { type UploadState } from '../components/ImageUpload';
 import { useGetAllSnackItems, useAddSnackItem, useGetAllBankAccounts } from '../hooks/useQueries';
 import { ExternalBlob } from '../backend';
 import { toast } from 'sonner';
@@ -23,14 +23,20 @@ export default function Admin() {
     price: '',
   });
   const [imageBlob, setImageBlob] = useState<ExternalBlob | null>(null);
+  const [imageUploadState, setImageUploadState] = useState<UploadState>('idle');
 
   const handleImageSelect = (blob: ExternalBlob | null) => {
     setImageBlob(blob);
   };
 
+  const handleUploadStateChange = (state: UploadState) => {
+    setImageUploadState(state);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Validate all fields
     if (!formData.id || !formData.name || !formData.description || !formData.price) {
       toast.error('Please fill in all fields');
       return;
@@ -38,6 +44,18 @@ export default function Admin() {
 
     if (!imageBlob) {
       toast.error('Please upload an image');
+      return;
+    }
+
+    // Check if image is still uploading
+    if (imageUploadState === 'uploading') {
+      toast.error('Please wait for the image to finish uploading');
+      return;
+    }
+
+    // Check if image upload failed
+    if (imageUploadState === 'error') {
+      toast.error('Image upload failed. Please try uploading again');
       return;
     }
 
@@ -61,12 +79,24 @@ export default function Admin() {
       // Reset form
       setFormData({ id: '', name: '', description: '', price: '' });
       setImageBlob(null);
+      setImageUploadState('idle');
     } catch (error) {
+      console.error('Error adding snack item:', error);
       toast.error(`Failed to add snack item: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
 
   const bankAccount = bankAccounts.length > 0 ? bankAccounts[0] : null;
+
+  // Determine if form can be submitted
+  const canSubmit = 
+    formData.id && 
+    formData.name && 
+    formData.description && 
+    formData.price && 
+    imageBlob && 
+    imageUploadState === 'success' &&
+    !addSnackItem.isPending;
 
   return (
     <div className="container px-4 py-8 max-w-6xl">
@@ -94,6 +124,7 @@ export default function Admin() {
                   value={formData.id}
                   onChange={(e) => setFormData({ ...formData, id: e.target.value })}
                   required
+                  disabled={addSnackItem.isPending}
                 />
               </div>
 
@@ -105,6 +136,7 @@ export default function Admin() {
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   required
+                  disabled={addSnackItem.isPending}
                 />
               </div>
 
@@ -117,6 +149,7 @@ export default function Admin() {
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={3}
                   required
+                  disabled={addSnackItem.isPending}
                 />
               </div>
 
@@ -131,23 +164,32 @@ export default function Admin() {
                   value={formData.price}
                   onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                   required
+                  disabled={addSnackItem.isPending}
                 />
               </div>
 
               <div className="space-y-2">
                 <Label>Product Image</Label>
-                <ImageUpload onImageSelect={handleImageSelect} />
+                <ImageUpload 
+                  onImageSelect={handleImageSelect}
+                  onUploadStateChange={handleUploadStateChange}
+                />
               </div>
 
               <Button
                 type="submit"
                 className="w-full"
-                disabled={addSnackItem.isPending || !imageBlob}
+                disabled={!canSubmit}
               >
                 {addSnackItem.isPending ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Adding Item...
+                  </>
+                ) : imageUploadState === 'uploading' ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Preparing Image...
                   </>
                 ) : (
                   'Add Snack Item'
@@ -181,6 +223,10 @@ export default function Admin() {
                           src={item.image.getDirectURL()}
                           alt={item.name}
                           className="w-full h-full object-cover"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.src = '/assets/logo.dim_256x256.png';
+                          }}
                         />
                       </div>
                       <div className="flex-1 min-w-0">

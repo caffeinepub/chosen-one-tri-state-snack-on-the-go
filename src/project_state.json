@@ -1,40 +1,39 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "Restaurant ordering app where customers can browse menu, select items with quantities, checkout with info and tip. Admin panel (PIN: 8914) for management. Currently removing public delete functionality for products.",
-  "architectural_notes": [
-    "Admin-only operations (like product deletion) require PIN authentication (8914)",
-    "Public users can browse menu, select quantities, and checkout but cannot modify product data"
-  ],
+  "summary": "New project",
+  "architectural_notes": [],
   "known_issues": [],
-  "isFixRequest": false,
+  "isFixRequest": true,
   "existing_features": [
     {
-      "id": "feature-remove-the-delete-button-and-delete-functionality-from-the-productcard-component-so-public-users-cannot-delete-products-from-the-catalog-view",
-      "title": "Remove the delete button and delete functionality from the ProductCard component so public users cannot delete products from the catalog view",
+      "id": "feature-debug-and-fix-the-image-upload-component-imageupload-tsx-to-ensure-images-are-successfully-uploaded-and-stored-in-the-backend",
+      "title": "Debug and fix the image upload component (ImageUpload.tsx) to ensure images are successfully uploaded and stored in the backend",
       "reqIds": [
         "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-admin-page-snack-creation-form-properly-integrates-with-the-imageupload-component-and-handles-upload-errors-gracefully",
+      "title": "Ensure the Admin page snack creation form properly integrates with the ImageUpload component and handles upload errors gracefully",
+      "reqIds": [
+        "REQ-3"
       ],
       "version": 1
     }
   ],
   "new_feature_requests": [
     {
-      "id": "AR-1",
-      "summary": "Remove product deletion capability from public-facing interface",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-3",
-      "summary": "Remove the delete button and delete functionality from the ProductDetail page so public users cannot delete products from the detail view",
+      "id": "AR-2",
+      "summary": "Verify the backend blob storage mechanism in main.mo correctly handles image data for snack items",
       "reqIds": [
         "REQ-2"
       ],
       "status": "pending"
     }
   ],
-  "projectName": "Chosen One Tri-State Snack",
+  "projectName": "Fix image upload functionality",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

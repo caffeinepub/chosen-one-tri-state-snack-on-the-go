@@ -1,56 +1,72 @@
 {
   "kind": "build_request",
-  "title": "Remove public product deletion capability",
-  "projectName": "Chosen One Tri-State Snack",
-  "priority": "normal",
+  "title": "Fix image upload functionality",
+  "priority": "high",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Remove the delete button and delete functionality from the ProductCard component so public users cannot delete products from the catalog view",
-      "target": "frontend",
+      "text": "Debug and fix the image upload component (ImageUpload.tsx) to ensure images are successfully uploaded and stored in the backend",
+      "target": "both",
       "source": {
         "messageIds": [
-          "msg-last"
+          "msg-latest"
         ],
         "quotes": [
-          "I don't want to public to be able to delete product, so don't leave the option for the public to delete any product"
+          "Fix my upload"
         ]
       },
       "acceptanceCriteria": [
-        "ProductCard component no longer displays a delete button",
-        "Public users cannot trigger product deletion from the catalog page",
-        "Admin users can still delete products through the SnackManagement admin page"
+        "Image files can be selected through the file input",
+        "Selected images display correctly in the preview",
+        "Upload progress indicator shows accurate progress",
+        "Images are successfully converted to ExternalBlob format",
+        "Backend receives and stores the image blob data correctly",
+        "Uploaded images can be retrieved and displayed in ProductCard and ProductDetail components"
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Remove the delete button and delete functionality from the ProductDetail page so public users cannot delete products from the detail view",
-      "target": "frontend",
+      "text": "Verify the backend blob storage mechanism in main.mo correctly handles image data for snack items",
+      "target": "backend",
       "source": {
         "messageIds": [
-          "msg-last"
-        ],
-        "quotes": [
-          "I don't want to public to be able to delete product, so don't leave the option for the public to delete any product"
+          "msg-latest"
         ]
       },
       "acceptanceCriteria": [
-        "ProductDetail page does not display a delete button",
-        "Public users cannot trigger product deletion from the product detail page",
-        "Admin users retain delete capability through the SnackManagement admin page"
+        "Backend accepts blob data from frontend upload requests",
+        "Images are stored in the Map-based state correctly",
+        "Stored images can be retrieved via getSnackItem queries",
+        "Image data integrity is maintained through storage and retrieval"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Ensure the Admin page snack creation form properly integrates with the ImageUpload component and handles upload errors gracefully",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Form submission waits for image upload completion",
+        "Upload errors display clear error messages to admin users",
+        "Successful uploads enable the form submit button",
+        "Failed uploads prevent form submission and show retry options"
       ]
     }
   ],
   "constraints": [
-    "Preserve admin delete functionality in the SnackManagement admin page",
-    "Do not modify backend deletion endpoints or logic",
-    "Maintain all other ProductCard and ProductDetail functionality (viewing, adding to cart, quantity selection)"
+    "Do not modify the existing PIN authentication system (PIN: 8914)",
+    "Maintain the current Map-based backend state structure",
+    "Preserve the ExternalBlob upload pattern used in ImageUpload.tsx"
   ],
   "nonGoals": [
-    "Changing how admin users delete products",
-    "Modifying the SnackManagement page",
-    "Adding new permission or role-based access control systems",
-    "Changing backend API endpoints"
+    "Changing the image storage backend architecture",
+    "Adding new image formats beyond current support",
+    "Implementing image compression or optimization",
+    "Adding bulk image upload functionality"
   ],
   "imageRequirements": {
     "required": [],
