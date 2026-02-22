@@ -1,79 +1,139 @@
 {
   "kind": "build_request",
-  "title": "Add image upload functionality for snack items",
-  "projectName": "Chosen One Tri-State Snack on the Go",
+  "title": "Add bank information storage and phone-based order pickup",
+  "projectName": "Chosen One Tri-State Snack",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-6",
-      "text": "Add an admin interface with image upload capability that allows uploading product images for snack items in the catalog",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-user-upload-request",
-          "msg-user-yes-confirmation"
-        ],
-        "quotes": [
-          "Add upload buttons for items",
-          "Yes"
-        ]
-      },
-      "acceptanceCriteria": [
-        "An admin section or page exists with upload functionality",
-        "Users can select and upload image files for products",
-        "Upload interface includes file selection button and preview of selected image",
-        "Uploaded images are stored and associated with specific product items"
-      ]
-    },
-    {
-      "id": "REQ-7",
-      "text": "Extend the backend to handle image uploads, storing uploaded images and associating them with catalog items by product ID",
+      "id": "REQ-21",
+      "text": "Add a backend data structure to store bank account information including account holder name, bank name, account number, and routing number",
       "target": "backend",
       "source": {
         "messageIds": [
-          "msg-user-upload-request",
-          "msg-user-yes-confirmation"
+          "msg-5"
         ],
         "quotes": [
-          "Add upload buttons for items"
+          "Implement a place where I can put my bank information so I can receive funds to my account when customers place order"
         ]
       },
       "acceptanceCriteria": [
-        "Backend accepts image file uploads via a new endpoint or method",
-        "Images are stored persistently in stable storage",
-        "Each image is linked to its corresponding snack item ID",
-        "Backend returns the image data or URL when querying catalog items"
+        "Backend maintains a single bank account record with fields for account holder name, bank name, account number, and routing number",
+        "Bank information can be updated and retrieved through backend methods"
       ]
     },
     {
-      "id": "REQ-8",
-      "text": "Update the ProductCard component to display uploaded images instead of placeholder images when available",
+      "id": "REQ-22",
+      "text": "Create an admin page with a form to enter and update bank account information for receiving customer payments",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-user-upload-request"
+          "msg-5"
         ],
         "quotes": [
-          "Add upload buttons for items"
+          "Implement a place where I can put my bank information so I can receive funds to my account"
         ]
       },
       "acceptanceCriteria": [
-        "Product cards show uploaded images when they exist for an item",
-        "Graceful fallback to placeholder or default image when no upload exists",
-        "Images display correctly with appropriate sizing and aspect ratio"
+        "Admin interface includes input fields for account holder name, bank name, account number, and routing number",
+        "Form allows saving and updating bank information",
+        "Displays current bank information when available",
+        "Shows success confirmation after saving bank details"
+      ]
+    },
+    {
+      "id": "REQ-23",
+      "text": "Add navigation link to the bank information admin page in the header navigation",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Navigation includes a link to access the bank information page",
+        "Link is accessible from the main header navigation"
+      ]
+    },
+    {
+      "id": "REQ-24",
+      "text": "Modify the Order data structure in the backend to include a customer phone number field",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "I want customers to make orders by using their phone number"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Order record includes a phone number field",
+        "Phone number is persisted when orders are created"
+      ]
+    },
+    {
+      "id": "REQ-25",
+      "text": "Add a phone number input field to the checkout form that captures the customer's phone number during order placement",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "I want customers to make orders by using their phone number"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Checkout form includes a phone number input field",
+        "Phone number is required to complete checkout",
+        "Phone number is submitted with the order"
+      ]
+    },
+    {
+      "id": "REQ-26",
+      "text": "Display the customer's phone number in the order confirmation view shown to customers after purchase",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "it would give their phone number whenever you're picking up their order"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Order confirmation page displays the customer's phone number",
+        "Phone number is clearly visible for pickup reference"
+      ]
+    },
+    {
+      "id": "REQ-27",
+      "text": "Display the customer's phone number in the admin order management interface for each order to identify customers during pickup",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "it would give their phone number whenever you're picking up their order"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Order management page shows customer phone number for each order",
+        "Phone number is prominently displayed alongside other order details",
+        "Phone number is visible when viewing order details for pickup coordination"
       ]
     }
   ],
   "constraints": [
-    "Maintain single-actor architecture in backend/main.mo",
-    "Do not modify immutable frontend paths: useInternetIdentity.ts, useInternetIdentity.tsx, useActor.ts, main.tsx, or components/ui",
-    "Preserve existing cart and checkout functionality"
+    "Maintain single-actor backend architecture in backend/main.mo",
+    "Do not modify immutable frontend paths: useInternetIdentity, useActor, main.tsx, and UI components in frontend/src/components/ui"
   ],
   "nonGoals": [
-    "Multi-vendor product management",
-    "Advanced image editing or filtering",
-    "External cloud storage integration",
-    "Bulk image upload from third-party sources"
+    "Implementing actual payment processing or Stripe integration",
+    "Phone number validation or SMS notifications",
+    "Encrypting or securing bank account information beyond basic storage",
+    "Multi-currency support or international banking formats"
   ],
   "imageRequirements": {
     "required": [],

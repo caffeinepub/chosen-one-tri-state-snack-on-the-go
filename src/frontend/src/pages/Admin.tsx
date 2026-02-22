@@ -21,12 +21,10 @@ export default function Admin() {
     description: '',
     price: '',
   });
-  const [imageData, setImageData] = useState<Uint8Array | null>(null);
-  const [uploadProgressCallback, setUploadProgressCallback] = useState<((percentage: number) => void) | null>(null);
+  const [imageBlob, setImageBlob] = useState<ExternalBlob | null>(null);
 
-  const handleImageChange = (data: Uint8Array | null, progressCallback: (percentage: number) => void) => {
-    setImageData(data);
-    setUploadProgressCallback(() => progressCallback);
+  const handleImageSelect = (blob: ExternalBlob | null) => {
+    setImageBlob(blob);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -37,7 +35,7 @@ export default function Admin() {
       return;
     }
 
-    if (!imageData) {
+    if (!imageBlob) {
       toast.error('Please upload an image');
       return;
     }
@@ -49,29 +47,19 @@ export default function Admin() {
     }
 
     try {
-      // Cast to the expected type for ExternalBlob.fromBytes
-      const imageBuffer = new Uint8Array(imageData.buffer) as Uint8Array<ArrayBuffer>;
-      let externalBlob = ExternalBlob.fromBytes(imageBuffer);
-      
-      // Add upload progress tracking if callback is available
-      if (uploadProgressCallback) {
-        externalBlob = externalBlob.withUploadProgress(uploadProgressCallback);
-      }
-
       await addSnackItem.mutateAsync({
         id: formData.id,
         name: formData.name,
         description: formData.description,
         price: BigInt(priceInCents),
-        image: externalBlob,
+        image: imageBlob,
       });
 
       toast.success('Snack item added successfully!');
       
       // Reset form
       setFormData({ id: '', name: '', description: '', price: '' });
-      setImageData(null);
-      setUploadProgressCallback(null);
+      setImageBlob(null);
     } catch (error) {
       toast.error(`Failed to add snack item: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
@@ -145,13 +133,13 @@ export default function Admin() {
 
               <div className="space-y-2">
                 <Label>Product Image</Label>
-                <ImageUpload onImageChange={handleImageChange} />
+                <ImageUpload onImageSelect={handleImageSelect} />
               </div>
 
               <Button
                 type="submit"
                 className="w-full"
-                disabled={addSnackItem.isPending || !imageData}
+                disabled={addSnackItem.isPending || !imageBlob}
               >
                 {addSnackItem.isPending ? (
                   <>

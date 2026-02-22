@@ -1,11 +1,15 @@
 # Specification
 
 ## Summary
-**Goal:** Add image upload functionality for snack items with admin interface and backend storage.
+**Goal:** Add bank account information storage for receiving payments and enable phone-based order pickup identification.
 
 **Planned changes:**
-- Create admin interface with image upload capability for product items
-- Implement backend endpoint to handle image uploads and store them with product associations
-- Update ProductCard component to display uploaded images instead of placeholders
+- Add backend data structure to store bank account information (account holder name, bank name, account number, routing number)
+- Create admin page with form to enter and update bank account details
+- Add navigation link to bank information admin page
+- Modify Order data structure to include customer phone number field
+- Add phone number input field to checkout form
+- Display customer phone number in order confirmation view
+- Display customer phone number in admin order management interface for pickup coordination
 
-**User-visible outcome:** Admins can upload custom product images through an admin interface, and these images will be displayed on product cards throughout the catalog instead of placeholder images.
+**User-visible outcome:** Admin can enter and manage bank account information for receiving payments. Customers provide their phone number during checkout, which is displayed on their order confirmation and in the admin order list for easy pickup identification.

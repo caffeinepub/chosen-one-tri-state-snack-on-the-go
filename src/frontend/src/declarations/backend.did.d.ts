@@ -10,11 +10,18 @@ import type { ActorMethod } from '@icp-sdk/core/agent';
 import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
+export interface BankAccount {
+  'routingNumber' : string,
+  'accountHolderName' : string,
+  'bankName' : string,
+  'accountNumber' : string,
+}
 export interface CartItem { 'item' : SnackItem, 'quantity' : bigint }
 export type ExternalBlob = Uint8Array;
 export interface Order {
   'id' : bigint,
   'customerName' : string,
+  'customerPhone' : string,
   'customerAddress' : string,
   'totalAmount' : bigint,
   'items' : Array<CartItem>,
@@ -54,14 +61,20 @@ export interface _SERVICE {
     _CaffeineStorageRefillResult
   >,
   '_caffeineStorageUpdateGatewayPrincipals' : ActorMethod<[], undefined>,
+  'addBankAccount' : ActorMethod<[string, string, string, string], string>,
   'addSnackItem' : ActorMethod<
     [string, string, string, bigint, ExternalBlob],
     undefined
   >,
   'addToCart' : ActorMethod<[string, string, bigint], undefined>,
-  'checkout' : ActorMethod<[string, string, string, string], bigint>,
+  'checkout' : ActorMethod<[string, string, string, string, string], bigint>,
+  'clearCart' : ActorMethod<[string], boolean>,
+  'deleteSnackItem' : ActorMethod<[string], boolean>,
+  'getAdminOrderManagement' : ActorMethod<[], Array<Order>>,
+  'getAllBankAccounts' : ActorMethod<[], Array<BankAccount>>,
   'getAllOrders' : ActorMethod<[], Array<Order>>,
   'getAllSnackItems' : ActorMethod<[], Array<SnackItem>>,
+  'getBankAccount' : ActorMethod<[string], [] | [BankAccount]>,
   'getCart' : ActorMethod<[string], Array<CartItem>>,
   'getOrder' : ActorMethod<[bigint], [] | [Order]>,
   'getSnackItem' : ActorMethod<[string], [] | [SnackItem]>,

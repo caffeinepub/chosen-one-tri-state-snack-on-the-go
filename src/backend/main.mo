@@ -3,10 +3,12 @@ import Text "mo:core/Text";
 import Nat "mo:core/Nat";
 import Runtime "mo:core/Runtime";
 import Array "mo:core/Array";
-
 import MixinStorage "blob-storage/Mixin";
 import Storage "blob-storage/Storage";
+import Migration "migration";
 
+// Specify the migration function in the with clause
+(with migration = Migration.run)
 actor {
   include MixinStorage();
 
@@ -14,7 +16,7 @@ actor {
     id : Text;
     name : Text;
     description : Text;
-    price : Nat; // Price in cents
+    price : Nat;
     image : Storage.ExternalBlob;
   };
 
@@ -28,14 +30,23 @@ actor {
     customerName : Text;
     customerEmail : Text;
     customerAddress : Text;
+    customerPhone : Text;
     items : [CartItem];
     totalAmount : Nat;
+  };
+
+  type BankAccount = {
+    accountHolderName : Text;
+    bankName : Text;
+    accountNumber : Text;
+    routingNumber : Text;
   };
 
   var nextOrderId = 0;
   let catalog = Map.empty<Text, SnackItem>();
   let carts = Map.empty<Text, [CartItem]>();
   let orders = Map.empty<Nat, Order>();
+  let bankAccounts = Map.empty<Text, BankAccount>();
 
   public shared ({ caller }) func addSnackItem(id : Text, name : Text, description : Text, price : Nat, image : Storage.ExternalBlob) : async () {
     let snackItem : SnackItem = {
@@ -46,6 +57,16 @@ actor {
       image;
     };
     catalog.add(id, snackItem);
+  };
+
+  public shared ({ caller }) func deleteSnackItem(id : Text) : async Bool {
+    switch (catalog.get(id)) {
+      case (null) { false };
+      case (?_) {
+        catalog.remove(id);
+        true;
+      };
+    };
   };
 
   public query ({ caller }) func getSnackItem(id : Text) : async ?SnackItem {
@@ -97,7 +118,23 @@ actor {
     };
   };
 
-  public shared ({ caller }) func checkout(userId : Text, customerName : Text, customerEmail : Text, customerAddress : Text) : async Nat {
+  public shared ({ caller }) func clearCart(userId : Text) : async Bool {
+    switch (carts.get(userId)) {
+      case (null) { false };
+      case (?_) {
+        carts.remove(userId);
+        true;
+      };
+    };
+  };
+
+  public shared ({ caller }) func checkout(
+    userId : Text,
+    customerName : Text,
+    customerEmail : Text,
+    customerAddress : Text,
+    customerPhone : Text // Added phone number parameter
+  ) : async Nat {
     let cart = switch (carts.get(userId)) {
       case (null) { Runtime.trap("Cart is empty") };
       case (?cart) { cart };
@@ -114,6 +151,7 @@ actor {
       customerName;
       customerEmail;
       customerAddress;
+      customerPhone;
       items = cart;
       totalAmount;
     };
@@ -130,5 +168,34 @@ actor {
 
   public query ({ caller }) func getAllOrders() : async [Order] {
     orders.values().toArray();
+  };
+
+  public query ({ caller }) func getAdminOrderManagement() : async [Order] {
+    orders.values().toArray();
+  };
+
+  public shared ({ caller }) func addBankAccount(
+    accountHolderName : Text,
+    bankName : Text,
+    accountNumber : Text,
+    routingNumber : Text,
+  ) : async Text {
+    let id = accountNumber;
+    let account : BankAccount = {
+      accountHolderName;
+      bankName;
+      accountNumber;
+      routingNumber;
+    };
+    bankAccounts.add(id, account);
+    id;
+  };
+
+  public query ({ caller }) func getBankAccount(accountNumber : Text) : async ?BankAccount {
+    bankAccounts.get(accountNumber);
+  };
+
+  public query ({ caller }) func getAllBankAccounts() : async [BankAccount] {
+    bankAccounts.values().toArray();
   };
 };

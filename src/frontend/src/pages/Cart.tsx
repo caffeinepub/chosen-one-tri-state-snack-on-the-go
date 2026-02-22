@@ -1,16 +1,29 @@
 import { useNavigate } from '@tanstack/react-router';
-import { ShoppingBag, ArrowRight } from 'lucide-react';
+import { ShoppingBag, ArrowRight, Trash2, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import CartItem from '../components/CartItem';
-import { useGetCart } from '../hooks/useQueries';
+import { useGetCart, useClearCart } from '../hooks/useQueries';
 import { useUserId } from '../hooks/useCart';
+import { toast } from 'sonner';
 
 export default function Cart() {
   const navigate = useNavigate();
   const userId = useUserId();
   const { data: cartItems = [], isLoading } = useGetCart(userId);
+  const clearCart = useClearCart();
 
   const total = cartItems.reduce((sum, item) => {
     return sum + Number(item.item.price) * Number(item.quantity);
@@ -20,6 +33,15 @@ export default function Cart() {
 
   const handleCheckout = () => {
     navigate({ to: '/checkout' });
+  };
+
+  const handleClearCart = async () => {
+    try {
+      await clearCart.mutateAsync(userId);
+      toast.success('Cart cleared successfully');
+    } catch (error) {
+      toast.error('Failed to clear cart');
+    }
   };
 
   if (isLoading) {
@@ -58,7 +80,47 @@ export default function Cart() {
   return (
     <div className="container px-4 py-8">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8">Your Cart</h1>
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl font-bold">Your Cart</h1>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button 
+                variant="outline" 
+                size="sm"
+                disabled={clearCart.isPending}
+              >
+                {clearCart.isPending ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Clearing...
+                  </>
+                ) : (
+                  <>
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Clear Cart
+                  </>
+                )}
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Clear your cart?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This will remove all items from your cart. This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handleClearCart}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                >
+                  Clear Cart
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
 
         <div className="space-y-4 mb-6">
           {cartItems.map((item, index) => (

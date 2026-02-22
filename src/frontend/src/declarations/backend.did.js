@@ -34,10 +34,17 @@ export const CartItem = IDL.Record({
 export const Order = IDL.Record({
   'id' : IDL.Nat,
   'customerName' : IDL.Text,
+  'customerPhone' : IDL.Text,
   'customerAddress' : IDL.Text,
   'totalAmount' : IDL.Nat,
   'items' : IDL.Vec(CartItem),
   'customerEmail' : IDL.Text,
+});
+export const BankAccount = IDL.Record({
+  'routingNumber' : IDL.Text,
+  'accountHolderName' : IDL.Text,
+  'bankName' : IDL.Text,
+  'accountNumber' : IDL.Text,
 });
 
 export const idlService = IDL.Service({
@@ -67,6 +74,11 @@ export const idlService = IDL.Service({
       [],
     ),
   '_caffeineStorageUpdateGatewayPrincipals' : IDL.Func([], [], []),
+  'addBankAccount' : IDL.Func(
+      [IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+      [IDL.Text],
+      [],
+    ),
   'addSnackItem' : IDL.Func(
       [IDL.Text, IDL.Text, IDL.Text, IDL.Nat, ExternalBlob],
       [],
@@ -74,12 +86,17 @@ export const idlService = IDL.Service({
     ),
   'addToCart' : IDL.Func([IDL.Text, IDL.Text, IDL.Nat], [], []),
   'checkout' : IDL.Func(
-      [IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+      [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
       [IDL.Nat],
       [],
     ),
+  'clearCart' : IDL.Func([IDL.Text], [IDL.Bool], []),
+  'deleteSnackItem' : IDL.Func([IDL.Text], [IDL.Bool], []),
+  'getAdminOrderManagement' : IDL.Func([], [IDL.Vec(Order)], ['query']),
+  'getAllBankAccounts' : IDL.Func([], [IDL.Vec(BankAccount)], ['query']),
   'getAllOrders' : IDL.Func([], [IDL.Vec(Order)], ['query']),
   'getAllSnackItems' : IDL.Func([], [IDL.Vec(SnackItem)], ['query']),
+  'getBankAccount' : IDL.Func([IDL.Text], [IDL.Opt(BankAccount)], ['query']),
   'getCart' : IDL.Func([IDL.Text], [IDL.Vec(CartItem)], ['query']),
   'getOrder' : IDL.Func([IDL.Nat], [IDL.Opt(Order)], ['query']),
   'getSnackItem' : IDL.Func([IDL.Text], [IDL.Opt(SnackItem)], ['query']),
@@ -111,10 +128,17 @@ export const idlFactory = ({ IDL }) => {
   const Order = IDL.Record({
     'id' : IDL.Nat,
     'customerName' : IDL.Text,
+    'customerPhone' : IDL.Text,
     'customerAddress' : IDL.Text,
     'totalAmount' : IDL.Nat,
     'items' : IDL.Vec(CartItem),
     'customerEmail' : IDL.Text,
+  });
+  const BankAccount = IDL.Record({
+    'routingNumber' : IDL.Text,
+    'accountHolderName' : IDL.Text,
+    'bankName' : IDL.Text,
+    'accountNumber' : IDL.Text,
   });
   
   return IDL.Service({
@@ -144,6 +168,11 @@ export const idlFactory = ({ IDL }) => {
         [],
       ),
     '_caffeineStorageUpdateGatewayPrincipals' : IDL.Func([], [], []),
+    'addBankAccount' : IDL.Func(
+        [IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+        [IDL.Text],
+        [],
+      ),
     'addSnackItem' : IDL.Func(
         [IDL.Text, IDL.Text, IDL.Text, IDL.Nat, ExternalBlob],
         [],
@@ -151,12 +180,17 @@ export const idlFactory = ({ IDL }) => {
       ),
     'addToCart' : IDL.Func([IDL.Text, IDL.Text, IDL.Nat], [], []),
     'checkout' : IDL.Func(
-        [IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+        [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
         [IDL.Nat],
         [],
       ),
+    'clearCart' : IDL.Func([IDL.Text], [IDL.Bool], []),
+    'deleteSnackItem' : IDL.Func([IDL.Text], [IDL.Bool], []),
+    'getAdminOrderManagement' : IDL.Func([], [IDL.Vec(Order)], ['query']),
+    'getAllBankAccounts' : IDL.Func([], [IDL.Vec(BankAccount)], ['query']),
     'getAllOrders' : IDL.Func([], [IDL.Vec(Order)], ['query']),
     'getAllSnackItems' : IDL.Func([], [IDL.Vec(SnackItem)], ['query']),
+    'getBankAccount' : IDL.Func([IDL.Text], [IDL.Opt(BankAccount)], ['query']),
     'getCart' : IDL.Func([IDL.Text], [IDL.Vec(CartItem)], ['query']),
     'getOrder' : IDL.Func([IDL.Nat], [IDL.Opt(Order)], ['query']),
     'getSnackItem' : IDL.Func([IDL.Text], [IDL.Opt(SnackItem)], ['query']),

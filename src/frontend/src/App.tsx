@@ -7,6 +7,10 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import OrderConfirmation from './pages/OrderConfirmation';
 import Admin from './pages/Admin';
+import SnackManagement from './pages/SnackManagement';
+import OrderManagement from './pages/OrderManagement';
+import About from './pages/About';
+import BankInformation from './pages/BankInformation';
 import { Toaster } from '@/components/ui/sonner';
 
 const rootRoute = createRootRoute({
@@ -47,12 +51,40 @@ const adminRoute = createRoute({
   component: Admin,
 });
 
+const snacksRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/snacks',
+  component: SnackManagement,
+});
+
+const ordersRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/admin/orders',
+  component: OrderManagement,
+});
+
+const aboutRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/about',
+  component: About,
+});
+
+const bankRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/admin/bank',
+  component: BankInformation,
+});
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   cartRoute,
   checkoutRoute,
   orderConfirmationRoute,
   adminRoute,
+  snacksRoute,
+  ordersRoute,
+  aboutRoute,
+  bankRoute,
 ]);
 
 const router = createRouter({ routeTree });

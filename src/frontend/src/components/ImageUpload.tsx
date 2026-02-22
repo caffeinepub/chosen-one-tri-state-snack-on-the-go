@@ -2,13 +2,14 @@ import { useRef, useState } from 'react';
 import { Upload, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import { ExternalBlob } from '../backend';
 
 interface ImageUploadProps {
   currentImageUrl?: string;
-  onImageChange: (imageData: Uint8Array | null, uploadProgress: (percentage: number) => void) => void;
+  onImageSelect: (blob: ExternalBlob | null) => void;
 }
 
-export default function ImageUpload({ currentImageUrl, onImageChange }: ImageUploadProps) {
+export default function ImageUpload({ currentImageUrl, onImageSelect }: ImageUploadProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(currentImageUrl || null);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -32,15 +33,18 @@ export default function ImageUpload({ currentImageUrl, onImageChange }: ImageUpl
 
     // Convert to Uint8Array for backend
     const arrayBuffer = await file.arrayBuffer();
-    const uint8Array = new Uint8Array(arrayBuffer);
+    const uint8Array = new Uint8Array(arrayBuffer) as Uint8Array<ArrayBuffer>;
     
     // Reset progress
     setUploadProgress(0);
     
-    // Pass data and progress callback to parent
-    onImageChange(uint8Array, (percentage) => {
+    // Create ExternalBlob with upload progress tracking
+    const blob = ExternalBlob.fromBytes(uint8Array).withUploadProgress((percentage) => {
       setUploadProgress(percentage);
     });
+    
+    // Pass ExternalBlob to parent
+    onImageSelect(blob);
   };
 
   const handleRemove = () => {
@@ -49,7 +53,7 @@ export default function ImageUpload({ currentImageUrl, onImageChange }: ImageUpl
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
-    onImageChange(null, () => {});
+    onImageSelect(null);
   };
 
   return (

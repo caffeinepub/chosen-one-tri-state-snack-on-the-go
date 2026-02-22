@@ -1,5 +1,5 @@
-import { Link, useNavigate } from '@tanstack/react-router';
-import { ShoppingCart, Settings } from 'lucide-react';
+import { Link, useNavigate, useRouterState } from '@tanstack/react-router';
+import { ShoppingCart, Settings, Package, ClipboardList, Info, Landmark } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useGetCart } from '../hooks/useQueries';
@@ -13,6 +13,8 @@ export default function Layout({ children }: LayoutProps) {
   const navigate = useNavigate();
   const userId = useUserId();
   const { data: cartItems = [] } = useGetCart(userId);
+  const routerState = useRouterState();
+  const currentPath = routerState.location.pathname;
 
   const cartItemCount = cartItems.reduce((sum, item) => sum + Number(item.quantity), 0);
 
@@ -36,7 +38,43 @@ export default function Layout({ children }: LayoutProps) {
           
           <div className="flex items-center gap-2">
             <Button
-              variant="ghost"
+              variant={currentPath === '/about' ? 'default' : 'ghost'}
+              size="icon"
+              onClick={() => navigate({ to: '/about' })}
+              title="About"
+            >
+              <Info className="h-5 w-5" />
+            </Button>
+
+            <Button
+              variant={currentPath === '/snacks' ? 'default' : 'ghost'}
+              size="icon"
+              onClick={() => navigate({ to: '/snacks' })}
+              title="Snacks"
+            >
+              <Package className="h-5 w-5" />
+            </Button>
+
+            <Button
+              variant={currentPath === '/admin/orders' ? 'default' : 'ghost'}
+              size="icon"
+              onClick={() => navigate({ to: '/admin/orders' })}
+              title="Orders"
+            >
+              <ClipboardList className="h-5 w-5" />
+            </Button>
+
+            <Button
+              variant={currentPath === '/admin/bank' ? 'default' : 'ghost'}
+              size="icon"
+              onClick={() => navigate({ to: '/admin/bank' })}
+              title="Bank Info"
+            >
+              <Landmark className="h-5 w-5" />
+            </Button>
+
+            <Button
+              variant={currentPath === '/admin' ? 'default' : 'ghost'}
               size="icon"
               onClick={() => navigate({ to: '/admin' })}
               title="Admin"
@@ -68,24 +106,19 @@ export default function Layout({ children }: LayoutProps) {
         {children}
       </main>
 
-      <footer className="border-t border-border/40 bg-card/50 backdrop-blur">
-        <div className="container px-4 py-6">
-          <div className="flex flex-col items-center justify-center gap-2 text-center">
-            <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} Chosen One Tri-State Snack on the Go. All rights reserved.
-            </p>
-            <p className="text-xs text-muted-foreground">
-              Built with ❤️ using{' '}
-              <a
-                href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-medium text-primary hover:underline"
-              >
-                caffeine.ai
-              </a>
-            </p>
-          </div>
+      <footer className="border-t border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 py-6 mt-12">
+        <div className="container px-4 text-center">
+          <p className="text-sm text-muted-foreground">
+            © {new Date().getFullYear()} Chosen One. Built with ❤️ using{' '}
+            <a
+              href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline font-medium"
+            >
+              caffeine.ai
+            </a>
+          </p>
         </div>
       </footer>
     </div>

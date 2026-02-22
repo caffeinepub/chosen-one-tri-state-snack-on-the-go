@@ -20,6 +20,7 @@ export default function Checkout() {
     customerName: '',
     customerEmail: '',
     customerAddress: '',
+    customerPhone: '',
   });
 
   const total = cartItems.reduce((sum, item) => {
@@ -31,7 +32,7 @@ export default function Checkout() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.customerName || !formData.customerEmail || !formData.customerAddress) {
+    if (!formData.customerName || !formData.customerEmail || !formData.customerAddress || !formData.customerPhone) {
       toast.error('Please fill in all fields');
       return;
     }
@@ -42,6 +43,7 @@ export default function Checkout() {
         customerName: formData.customerName,
         customerEmail: formData.customerEmail,
         customerAddress: formData.customerAddress,
+        customerPhone: formData.customerPhone,
       },
       {
         onSuccess: (orderId) => {
@@ -109,6 +111,20 @@ export default function Checkout() {
                     value={formData.customerEmail}
                     onChange={(e) =>
                       setFormData({ ...formData, customerEmail: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Phone Number</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    placeholder="(555) 123-4567"
+                    value={formData.customerPhone}
+                    onChange={(e) =>
+                      setFormData({ ...formData, customerPhone: e.target.value })
                     }
                     required
                   />
