@@ -1,200 +1,19 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 15,
-  "summary": "Mobile snack shop app for selling goods on wheels",
+  "projectStateVersion": 3,
+  "summary": "Restaurant ordering app where customers can browse menu, select items with quantities, checkout with info and tip. Admin panel (PIN: 8914) for management. Currently removing public delete functionality for products.",
   "architectural_notes": [
-    "Mobile-first design for on-the-go ordering",
-    "Professional and unique UI/UX for food service app",
-    "About page should showcase business credibility and service coverage areas",
-    "Payment integration will require secure storage of bank account information",
-    "Phone number will serve as primary customer identifier for order pickup"
+    "Admin-only operations (like product deletion) require PIN authentication (8914)",
+    "Public users can browse menu, select quantities, and checkout but cannot modify product data"
   ],
-  "known_issues": [
-    "Upload functionality for snacks is currently failing"
-  ],
+  "known_issues": [],
   "isFixRequest": false,
   "existing_features": [
     {
-      "id": "feature-create-a-product-catalog-displaying-snack-items-available-for-sale-with-name-description-price-and-image-for-each-item",
-      "title": "Create a product catalog displaying snack items available for sale with name, description, price, and image for each item",
+      "id": "feature-remove-the-delete-button-and-delete-functionality-from-the-productcard-component-so-public-users-cannot-delete-products-from-the-catalog-view",
+      "title": "Remove the delete button and delete functionality from the ProductCard component so public users cannot delete products from the catalog view",
       "reqIds": [
         "REQ-1"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-implement-a-shopping-cart-system-allowing-customers-to-add-items-adjust-quantities-and-view-cart-total",
-      "title": "Implement a shopping cart system allowing customers to add items, adjust quantities, and view cart total",
-      "reqIds": [
-        "REQ-2"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-create-an-order-checkout-flow-that-captures-customer-contact-information-and-order-details",
-      "title": "Create an order checkout flow that captures customer contact information and order details",
-      "reqIds": [
-        "REQ-3"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-design-a-professional-unique-mobile-first-interface-with-a-cohesive-food-truck-theme-featuring-warm-appetizing-colors-oranges-reds-yellows-playful-typography-that-evokes-street-food-culture-and-card-based-layouts-that-work-well-on-mobile-screens",
-      "title": "Design a professional, unique mobile-first interface with a cohesive food truck theme featuring warm, appetizing colors (oranges, reds, yellows), playful typography that evokes street food culture, and card-based layouts that work well on mobile screens",
-      "reqIds": [
-        "REQ-4"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-display-business-branding-with-the-name-chosen-one-tri-state-snack-on-the-go-prominently-in-the-header-and-integrate-generated-food-truck-and-logo-images-as-static-assets",
-      "title": "Display business branding with the name 'Chosen One Tri-State Snack on the Go' prominently in the header and integrate generated food truck and logo images as static assets",
-      "reqIds": [
-        "REQ-5"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-an-admin-interface-with-image-upload-capability-that-allows-uploading-product-images-for-snack-items-in-the-catalog",
-      "title": "Add an admin interface with image upload capability that allows uploading product images for snack items in the catalog",
-      "reqIds": [
-        "REQ-6"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-debug-and-fix-the-failing-snack-upload-functionality-in-the-admin-interface-to-ensure-images-can-be-successfully-uploaded-and-associated-with-catalog-items",
-      "title": "Debug and fix the failing snack upload functionality in the admin interface to ensure images can be successfully uploaded and associated with catalog items",
-      "reqIds": [
-        "REQ-9"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-create-a-dedicated-snack-management-page-that-displays-all-snack-items-with-their-details-name-description-price-image-in-an-organized-layout",
-      "title": "Create a dedicated snack management page that displays all snack items with their details (name, description, price, image) in an organized layout",
-      "reqIds": [
-        "REQ-10"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-navigation-link-to-the-new-snack-management-page-in-the-header-navigation",
-      "title": "Add navigation link to the new snack management page in the header navigation",
-      "reqIds": [
-        "REQ-11"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-delete-functionality-to-the-admin-interface-allowing-removal-of-snack-items-from-the-catalog-by-their-id",
-      "title": "Add delete functionality to the admin interface allowing removal of snack items from the catalog by their ID",
-      "reqIds": [
-        "REQ-12"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-a-clear-cart-button-to-the-cart-page-that-empties-all-items-from-the-user-s-shopping-cart",
-      "title": "Add a clear cart button to the Cart page that empties all items from the user's shopping cart",
-      "reqIds": [
-        "REQ-13"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-create-an-order-confirmation-view-accessible-to-customers-showing-their-order-has-been-confirmed-after-purchase",
-      "title": "Create an order confirmation view accessible to customers showing their order has been confirmed after purchase",
-      "reqIds": [
-        "REQ-14"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-an-admin-order-management-interface-displaying-all-submitted-orders-with-their-confirmation-status-and-customer-details",
-      "title": "Add an admin order management interface displaying all submitted orders with their confirmation status and customer details",
-      "reqIds": [
-        "REQ-15"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-a-delete-button-to-each-productcard-component-in-the-product-catalog-that-allows-customers-to-remove-snack-items-from-the-catalog",
-      "title": "Add a delete button to each ProductCard component in the product catalog that allows customers to remove snack items from the catalog",
-      "reqIds": [
-        "REQ-16"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-create-an-about-page-route-at-about-that-is-accessible-from-the-main-navigation",
-      "title": "Create an About page route at /about that is accessible from the main navigation",
-      "reqIds": [
-        "REQ-17"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-display-the-business-foundation-year-of-2026-prominently-on-the-about-page",
-      "title": "Display the business foundation year of 2026 prominently on the About page",
-      "reqIds": [
-        "REQ-18"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-compelling-business-details-on-the-about-page-that-highlight-the-unique-value-proposition-and-story-of-chosen-one-tri-state-snack-on-the-go",
-      "title": "Add compelling business details on the About page that highlight the unique value proposition and story of 'Chosen One Tri-State Snack on the Go'",
-      "reqIds": [
-        "REQ-19"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-display-the-service-area-coverage-on-the-about-page-listing-southaven-horn-lake-and-olive-branch-mississippi-as-the-cities-served",
-      "title": "Display the service area coverage on the About page, listing Southaven, Horn Lake, and Olive Branch, Mississippi as the cities served",
-      "reqIds": [
-        "REQ-20"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-create-an-admin-page-with-a-form-to-enter-and-update-bank-account-information-for-receiving-customer-payments",
-      "title": "Create an admin page with a form to enter and update bank account information for receiving customer payments",
-      "reqIds": [
-        "REQ-22"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-navigation-link-to-the-bank-information-admin-page-in-the-header-navigation",
-      "title": "Add navigation link to the bank information admin page in the header navigation",
-      "reqIds": [
-        "REQ-23"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-a-phone-number-input-field-to-the-checkout-form-that-captures-the-customer-s-phone-number-during-order-placement",
-      "title": "Add a phone number input field to the checkout form that captures the customer's phone number during order placement",
-      "reqIds": [
-        "REQ-25"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-display-the-customer-s-phone-number-in-the-order-confirmation-view-shown-to-customers-after-purchase",
-      "title": "Display the customer's phone number in the order confirmation view shown to customers after purchase",
-      "reqIds": [
-        "REQ-26"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-display-the-customer-s-phone-number-in-the-admin-order-management-interface-for-each-order-to-identify-customers-during-pickup",
-      "title": "Display the customer's phone number in the admin order management interface for each order to identify customers during pickup",
-      "reqIds": [
-        "REQ-27"
       ],
       "version": 1
     }
@@ -202,99 +21,20 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Create mobile snack shop application",
+      "summary": "Remove product deletion capability from public-facing interface",
       "reqIds": [],
       "status": "pending"
     },
     {
-      "id": "AR-2",
-      "summary": "Add upload buttons for items",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-4",
-      "summary": "Extend the backend to handle image uploads, storing uploaded images and associating them with catalog items by product ID",
+      "id": "AR-3",
+      "summary": "Remove the delete button and delete functionality from the ProductDetail page so public users cannot delete products from the detail view",
       "reqIds": [
-        "REQ-7"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "AR-5",
-      "summary": "Update the ProductCard component to display uploaded images instead of placeholder images when available",
-      "reqIds": [
-        "REQ-8"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "AR-6",
-      "summary": "Create a dedicated snack page for viewing/managing snacks",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-7",
-      "summary": "Add delete option when uploading/managing snack items in admin interface",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-8",
-      "summary": "Add option to clear/delete entire shopping cart",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-9",
-      "summary": "Implement order confirmation system for both customer purchases and admin order management",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-10",
-      "summary": "Add delete button to every snack item in the catalog for easy removal",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-11",
-      "summary": "Create an About page highlighting business foundation in 2026, compelling business details, and service areas (Southaven, Horn Lake, and Olive Branch, Mississippi)",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-12",
-      "summary": "Add admin interface for entering/storing bank account information to receive customer payments",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-13",
-      "summary": "Modify checkout flow to collect customer phone number and display it with order details for pickup identification",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-14",
-      "summary": "Add a backend data structure to store bank account information including account holder name, bank name, account number, and routing number",
-      "reqIds": [
-        "REQ-21"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "AR-17",
-      "summary": "Modify the Order data structure in the backend to include a customer phone number field",
-      "reqIds": [
-        "REQ-24"
+        "REQ-2"
       ],
       "status": "pending"
     }
   ],
-  "gameProjectType": "none",
-  "projectName": "Chosen One Tri-State Snack on the Go",
+  "projectName": "Chosen One Tri-State Snack",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

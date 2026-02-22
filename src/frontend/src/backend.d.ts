@@ -33,6 +33,7 @@ export interface CartItem {
 }
 export interface Order {
     id: bigint;
+    tip?: bigint;
     customerName: string;
     customerPhone: string;
     customerAddress: string;
@@ -44,7 +45,7 @@ export interface backendInterface {
     addBankAccount(accountHolderName: string, bankName: string, accountNumber: string, routingNumber: string): Promise<string>;
     addSnackItem(id: string, name: string, description: string, price: bigint, image: ExternalBlob): Promise<void>;
     addToCart(userId: string, itemId: string, quantity: bigint): Promise<void>;
-    checkout(userId: string, customerName: string, customerEmail: string, customerAddress: string, customerPhone: string): Promise<bigint>;
+    checkout(userId: string, customerName: string, customerEmail: string, customerAddress: string, customerPhone: string, tip: bigint | null): Promise<bigint>;
     clearCart(userId: string): Promise<boolean>;
     deleteSnackItem(id: string): Promise<boolean>;
     getAdminOrderManagement(): Promise<Array<Order>>;

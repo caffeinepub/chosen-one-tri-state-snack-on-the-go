@@ -1,139 +1,56 @@
 {
   "kind": "build_request",
-  "title": "Add bank information storage and phone-based order pickup",
+  "title": "Remove public product deletion capability",
   "projectName": "Chosen One Tri-State Snack",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-21",
-      "text": "Add a backend data structure to store bank account information including account holder name, bank name, account number, and routing number",
-      "target": "backend",
-      "source": {
-        "messageIds": [
-          "msg-5"
-        ],
-        "quotes": [
-          "Implement a place where I can put my bank information so I can receive funds to my account when customers place order"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Backend maintains a single bank account record with fields for account holder name, bank name, account number, and routing number",
-        "Bank information can be updated and retrieved through backend methods"
-      ]
-    },
-    {
-      "id": "REQ-22",
-      "text": "Create an admin page with a form to enter and update bank account information for receiving customer payments",
+      "id": "REQ-1",
+      "text": "Remove the delete button and delete functionality from the ProductCard component so public users cannot delete products from the catalog view",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-5"
+          "msg-last"
         ],
         "quotes": [
-          "Implement a place where I can put my bank information so I can receive funds to my account"
+          "I don't want to public to be able to delete product, so don't leave the option for the public to delete any product"
         ]
       },
       "acceptanceCriteria": [
-        "Admin interface includes input fields for account holder name, bank name, account number, and routing number",
-        "Form allows saving and updating bank information",
-        "Displays current bank information when available",
-        "Shows success confirmation after saving bank details"
+        "ProductCard component no longer displays a delete button",
+        "Public users cannot trigger product deletion from the catalog page",
+        "Admin users can still delete products through the SnackManagement admin page"
       ]
     },
     {
-      "id": "REQ-23",
-      "text": "Add navigation link to the bank information admin page in the header navigation",
+      "id": "REQ-2",
+      "text": "Remove the delete button and delete functionality from the ProductDetail page so public users cannot delete products from the detail view",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-5"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Navigation includes a link to access the bank information page",
-        "Link is accessible from the main header navigation"
-      ]
-    },
-    {
-      "id": "REQ-24",
-      "text": "Modify the Order data structure in the backend to include a customer phone number field",
-      "target": "backend",
-      "source": {
-        "messageIds": [
-          "msg-5"
+          "msg-last"
         ],
         "quotes": [
-          "I want customers to make orders by using their phone number"
+          "I don't want to public to be able to delete product, so don't leave the option for the public to delete any product"
         ]
       },
       "acceptanceCriteria": [
-        "Order record includes a phone number field",
-        "Phone number is persisted when orders are created"
-      ]
-    },
-    {
-      "id": "REQ-25",
-      "text": "Add a phone number input field to the checkout form that captures the customer's phone number during order placement",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-5"
-        ],
-        "quotes": [
-          "I want customers to make orders by using their phone number"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Checkout form includes a phone number input field",
-        "Phone number is required to complete checkout",
-        "Phone number is submitted with the order"
-      ]
-    },
-    {
-      "id": "REQ-26",
-      "text": "Display the customer's phone number in the order confirmation view shown to customers after purchase",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-5"
-        ],
-        "quotes": [
-          "it would give their phone number whenever you're picking up their order"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Order confirmation page displays the customer's phone number",
-        "Phone number is clearly visible for pickup reference"
-      ]
-    },
-    {
-      "id": "REQ-27",
-      "text": "Display the customer's phone number in the admin order management interface for each order to identify customers during pickup",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-5"
-        ],
-        "quotes": [
-          "it would give their phone number whenever you're picking up their order"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Order management page shows customer phone number for each order",
-        "Phone number is prominently displayed alongside other order details",
-        "Phone number is visible when viewing order details for pickup coordination"
+        "ProductDetail page does not display a delete button",
+        "Public users cannot trigger product deletion from the product detail page",
+        "Admin users retain delete capability through the SnackManagement admin page"
       ]
     }
   ],
   "constraints": [
-    "Maintain single-actor backend architecture in backend/main.mo",
-    "Do not modify immutable frontend paths: useInternetIdentity, useActor, main.tsx, and UI components in frontend/src/components/ui"
+    "Preserve admin delete functionality in the SnackManagement admin page",
+    "Do not modify backend deletion endpoints or logic",
+    "Maintain all other ProductCard and ProductDetail functionality (viewing, adding to cart, quantity selection)"
   ],
   "nonGoals": [
-    "Implementing actual payment processing or Stripe integration",
-    "Phone number validation or SMS notifications",
-    "Encrypting or securing bank account information beyond basic storage",
-    "Multi-currency support or international banking formats"
+    "Changing how admin users delete products",
+    "Modifying the SnackManagement page",
+    "Adding new permission or role-based access control systems",
+    "Changing backend API endpoints"
   ],
   "imageRequirements": {
     "required": [],

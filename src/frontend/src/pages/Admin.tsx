@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Loader2, Plus } from 'lucide-react';
+import { Loader2, Plus, Building2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,12 +7,13 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
 import ImageUpload from '../components/ImageUpload';
-import { useGetAllSnackItems, useAddSnackItem } from '../hooks/useQueries';
+import { useGetAllSnackItems, useAddSnackItem, useGetAllBankAccounts } from '../hooks/useQueries';
 import { ExternalBlob } from '../backend';
 import { toast } from 'sonner';
 
 export default function Admin() {
   const { data: snackItems = [], isLoading } = useGetAllSnackItems();
+  const { data: bankAccounts = [], isLoading: isBankAccountsLoading } = useGetAllBankAccounts();
   const addSnackItem = useAddSnackItem();
 
   const [formData, setFormData] = useState({
@@ -65,6 +66,8 @@ export default function Admin() {
     }
   };
 
+  const bankAccount = bankAccounts.length > 0 ? bankAccounts[0] : null;
+
   return (
     <div className="container px-4 py-8 max-w-6xl">
       <div className="mb-8">
@@ -72,7 +75,7 @@ export default function Admin() {
         <p className="text-muted-foreground">Manage your snack items and inventory</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         {/* Add New Item Form */}
         <Card>
           <CardHeader>
@@ -196,6 +199,50 @@ export default function Admin() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Bank Account Information */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Building2 className="h-5 w-5" />
+            Bank Account Information
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {isBankAccountsLoading ? (
+            <div className="flex items-center justify-center py-8">
+              <Loader2 className="h-6 w-6 animate-spin text-primary" />
+            </div>
+          ) : bankAccount ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label className="text-muted-foreground">Account Holder Name</Label>
+                <p className="text-foreground font-medium">{bankAccount.accountHolderName}</p>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-muted-foreground">Bank Name</Label>
+                <p className="text-foreground font-medium">{bankAccount.bankName}</p>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-muted-foreground">Account Number</Label>
+                <p className="text-foreground font-medium font-mono">{bankAccount.accountNumber}</p>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-muted-foreground">Routing Number</Label>
+                <p className="text-foreground font-medium font-mono">{bankAccount.routingNumber}</p>
+              </div>
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <Building2 className="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" />
+              <p className="text-muted-foreground mb-4">No bank account information saved yet.</p>
+              <p className="text-sm text-muted-foreground">
+                Visit the Bank Information page to add your account details.
+              </p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

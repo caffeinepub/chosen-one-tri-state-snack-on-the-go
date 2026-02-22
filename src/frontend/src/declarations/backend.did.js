@@ -33,6 +33,7 @@ export const CartItem = IDL.Record({
 });
 export const Order = IDL.Record({
   'id' : IDL.Nat,
+  'tip' : IDL.Opt(IDL.Nat),
   'customerName' : IDL.Text,
   'customerPhone' : IDL.Text,
   'customerAddress' : IDL.Text,
@@ -86,7 +87,7 @@ export const idlService = IDL.Service({
     ),
   'addToCart' : IDL.Func([IDL.Text, IDL.Text, IDL.Nat], [], []),
   'checkout' : IDL.Func(
-      [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+      [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Opt(IDL.Nat)],
       [IDL.Nat],
       [],
     ),
@@ -127,6 +128,7 @@ export const idlFactory = ({ IDL }) => {
   const CartItem = IDL.Record({ 'item' : SnackItem, 'quantity' : IDL.Nat });
   const Order = IDL.Record({
     'id' : IDL.Nat,
+    'tip' : IDL.Opt(IDL.Nat),
     'customerName' : IDL.Text,
     'customerPhone' : IDL.Text,
     'customerAddress' : IDL.Text,
@@ -180,7 +182,7 @@ export const idlFactory = ({ IDL }) => {
       ),
     'addToCart' : IDL.Func([IDL.Text, IDL.Text, IDL.Nat], [], []),
     'checkout' : IDL.Func(
-        [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+        [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Opt(IDL.Nat)],
         [IDL.Nat],
         [],
       ),

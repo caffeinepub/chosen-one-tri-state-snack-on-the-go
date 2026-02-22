@@ -2,12 +2,10 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-create-an-admin-page-with-a-form-to-enter-and-update-bank-account-information-for-receiving-customer-payments",
-      "featureTitle": "Create an admin page with a form to enter and update bank account information for receiving customer payments",
+      "featureId": "feature-remove-the-delete-button-and-delete-functionality-from-the-productcard-component-so-public-users-cannot-delete-products-from-the-catalog-view",
+      "featureTitle": "Remove the delete button and delete functionality from the ProductCard component so public users cannot delete products from the catalog view",
       "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/hooks/useQueries.ts",
-        "frontend/src/pages/BankInformation.tsx"
+        "frontend/src/components/ProductCard.tsx"
       ],
       "components": [
         "blob-storage@4.0.0",
@@ -18,83 +16,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-22"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-navigation-link-to-the-bank-information-admin-page-in-the-header-navigation",
-      "featureTitle": "Add navigation link to the bank information admin page in the header navigation",
-      "files": [
-        "frontend/src/components/Layout.tsx"
-      ],
-      "components": [
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-23"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-a-phone-number-input-field-to-the-checkout-form-that-captures-the-customer-s-phone-number-during-order-placement",
-      "featureTitle": "Add a phone number input field to the checkout form that captures the customer's phone number during order placement",
-      "files": [
-        "frontend/src/pages/Checkout.tsx"
-      ],
-      "components": [
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-25"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-display-the-customer-s-phone-number-in-the-order-confirmation-view-shown-to-customers-after-purchase",
-      "featureTitle": "Display the customer's phone number in the order confirmation view shown to customers after purchase",
-      "files": [
-        "frontend/src/pages/OrderConfirmation.tsx"
-      ],
-      "components": [
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-26"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-display-the-customer-s-phone-number-in-the-admin-order-management-interface-for-each-order-to-identify-customers-during-pickup",
-      "featureTitle": "Display the customer's phone number in the admin order management interface for each order to identify customers during pickup",
-      "files": [
-        "frontend/src/pages/OrderManagement.tsx"
-      ],
-      "components": [
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-27"
+        "REQ-1"
       ],
       "confidence": "high"
     }

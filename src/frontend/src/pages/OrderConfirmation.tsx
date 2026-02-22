@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from '@tanstack/react-router';
-import { CheckCircle2, ArrowRight, Package, User, Mail, MapPin, Phone } from 'lucide-react';
+import { CheckCircle2, ArrowRight, Package, User, Mail, MapPin, Phone, DollarSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -42,6 +42,10 @@ export default function OrderConfirmation() {
     );
   }
 
+  const tipAmount = order.tip ? Number(order.tip) : 0;
+  const subtotal = Number(order.totalAmount) - tipAmount;
+  const subtotalInDollars = (subtotal / 100).toFixed(2);
+  const tipInDollars = (tipAmount / 100).toFixed(2);
   const totalInDollars = (Number(order.totalAmount) / 100).toFixed(2);
 
   return (
@@ -128,9 +132,28 @@ export default function OrderConfirmation() {
 
             <Separator className="my-6" />
 
-            <div className="flex justify-between items-center p-4 rounded-lg bg-gradient-to-br from-primary/10 to-accent/10">
-              <span className="text-xl font-bold">Total</span>
-              <span className="text-2xl font-bold text-primary">${totalInDollars}</span>
+            <div className="space-y-3">
+              <div className="flex justify-between text-base">
+                <span className="text-muted-foreground">Subtotal</span>
+                <span className="font-medium">${subtotalInDollars}</span>
+              </div>
+              
+              {tipAmount > 0 && (
+                <div className="flex justify-between text-base">
+                  <span className="text-muted-foreground flex items-center gap-2">
+                    <DollarSign className="h-4 w-4" />
+                    Tip
+                  </span>
+                  <span className="font-medium text-primary">${tipInDollars}</span>
+                </div>
+              )}
+
+              <Separator />
+
+              <div className="flex justify-between items-center p-4 rounded-lg bg-gradient-to-br from-primary/10 to-accent/10">
+                <span className="text-xl font-bold">Total</span>
+                <span className="text-2xl font-bold text-primary">${totalInDollars}</span>
+              </div>
             </div>
           </CardContent>
         </Card>

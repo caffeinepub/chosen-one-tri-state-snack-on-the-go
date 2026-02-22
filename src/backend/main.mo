@@ -5,10 +5,9 @@ import Runtime "mo:core/Runtime";
 import Array "mo:core/Array";
 import MixinStorage "blob-storage/Mixin";
 import Storage "blob-storage/Storage";
-import Migration "migration";
 
-// Specify the migration function in the with clause
-(with migration = Migration.run)
+
+
 actor {
   include MixinStorage();
 
@@ -33,6 +32,7 @@ actor {
     customerPhone : Text;
     items : [CartItem];
     totalAmount : Nat;
+    tip : ?Nat;
   };
 
   type BankAccount = {
@@ -133,7 +133,8 @@ actor {
     customerName : Text,
     customerEmail : Text,
     customerAddress : Text,
-    customerPhone : Text // Added phone number parameter
+    customerPhone : Text, // Added phone number parameter
+    tip : ?Nat // Added optional tip parameter
   ) : async Nat {
     let cart = switch (carts.get(userId)) {
       case (null) { Runtime.trap("Cart is empty") };
@@ -154,6 +155,7 @@ actor {
       customerPhone;
       items = cart;
       totalAmount;
+      tip;
     };
 
     orders.add(nextOrderId, order);

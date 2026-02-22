@@ -16,6 +16,19 @@ export function useGetAllSnackItems() {
   });
 }
 
+export function useGetSnackItem(id: string) {
+  const { actor, isFetching } = useActor();
+
+  return useQuery<SnackItem | null>({
+    queryKey: ['snackItem', id],
+    queryFn: async () => {
+      if (!actor) return null;
+      return actor.getSnackItem(id);
+    },
+    enabled: !!actor && !isFetching && !!id,
+  });
+}
+
 export function useGetCart(userId: string) {
   const { actor, isFetching } = useActor();
 
@@ -55,15 +68,17 @@ export function useCheckout() {
       customerEmail,
       customerAddress,
       customerPhone,
+      tip,
     }: {
       userId: string;
       customerName: string;
       customerEmail: string;
       customerAddress: string;
       customerPhone: string;
+      tip: bigint | null;
     }) => {
       if (!actor) throw new Error('Actor not initialized');
-      return actor.checkout(userId, customerName, customerEmail, customerAddress, customerPhone);
+      return actor.checkout(userId, customerName, customerEmail, customerAddress, customerPhone, tip);
     },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['cart', variables.userId] });

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
-import { Loader2 } from 'lucide-react';
+import { Loader2, DollarSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -23,10 +23,28 @@ export default function Checkout() {
     customerPhone: '',
   });
 
-  const total = cartItems.reduce((sum, item) => {
+  const [tipOption, setTipOption] = useState<'none' | '10' | '15' | '20' | 'custom'>('none');
+  const [customTip, setCustomTip] = useState('');
+
+  const subtotal = cartItems.reduce((sum, item) => {
     return sum + Number(item.item.price) * Number(item.quantity);
   }, 0);
 
+  const calculateTip = (): number => {
+    if (tipOption === 'none') return 0;
+    if (tipOption === 'custom') {
+      const amount = parseFloat(customTip) || 0;
+      return Math.round(amount * 100); // Convert to cents
+    }
+    const percentage = parseInt(tipOption) / 100;
+    return Math.round(subtotal * percentage);
+  };
+
+  const tipAmount = calculateTip();
+  const total = subtotal + tipAmount;
+
+  const subtotalInDollars = (subtotal / 100).toFixed(2);
+  const tipInDollars = (tipAmount / 100).toFixed(2);
   const totalInDollars = (total / 100).toFixed(2);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -44,6 +62,7 @@ export default function Checkout() {
         customerEmail: formData.customerEmail,
         customerAddress: formData.customerAddress,
         customerPhone: formData.customerPhone,
+        tip: tipAmount > 0 ? BigInt(tipAmount) : null,
       },
       {
         onSuccess: (orderId) => {
@@ -179,7 +198,111 @@ export default function Checkout() {
                   </div>
                 ))}
               </div>
+              
               <Separator />
+              
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <DollarSign className="h-4 w-4 text-primary" />
+                  <Label className="text-base font-semibold">Add a Tip</Label>
+                </div>
+                
+                <div className="grid grid-cols-4 gap-2">
+                  <Button
+                    type="button"
+                    variant={tipOption === '10' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => {
+                      setTipOption('10');
+                      setCustomTip('');
+                    }}
+                  >
+                    10%
+                  </Button>
+                  <Button
+                    type="button"
+                    variant={tipOption === '15' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => {
+                      setTipOption('15');
+                      setCustomTip('');
+                    }}
+                  >
+                    15%
+                  </Button>
+                  <Button
+                    type="button"
+                    variant={tipOption === '20' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => {
+                      setTipOption('20');
+                      setCustomTip('');
+                    }}
+                  >
+                    20%
+                  </Button>
+                  <Button
+                    type="button"
+                    variant={tipOption === 'custom' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setTipOption('custom')}
+                  >
+                    Custom
+                  </Button>
+                </div>
+
+                {tipOption === 'custom' && (
+                  <div className="space-y-2">
+                    <Label htmlFor="customTip" className="text-sm">Custom Tip Amount</Label>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
+                      <Input
+                        id="customTip"
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        placeholder="0.00"
+                        value={customTip}
+                        onChange={(e) => setCustomTip(e.target.value)}
+                        className="pl-7"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {tipOption !== 'none' && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setTipOption('none');
+                      setCustomTip('');
+                    }}
+                    className="w-full"
+                  >
+                    No Tip
+                  </Button>
+                )}
+              </div>
+
+              <Separator />
+              
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Subtotal</span>
+                  <span className="font-medium">${subtotalInDollars}</span>
+                </div>
+                {tipAmount > 0 && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Tip</span>
+                    <span className="font-medium text-primary">${tipInDollars}</span>
+                  </div>
+                )}
+              </div>
+
+              <Separator />
+              
               <div className="flex justify-between text-xl font-bold">
                 <span>Total</span>
                 <span className="text-primary">${totalInDollars}</span>

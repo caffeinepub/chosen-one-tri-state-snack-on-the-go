@@ -1,94 +1,37 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Add bank information storage and phone-based order pickup",
+  "title": "Remove public product deletion capability",
   "requirements": [
     {
-      "id": "REQ-22",
-      "summary": "Create an admin page with a form to enter and update bank account information for receiving customer payments",
+      "id": "REQ-1",
+      "summary": "Remove the delete button and delete functionality from the ProductCard component so public users cannot delete products from the catalog view",
       "acceptanceCriteria": [
-        "Admin interface includes input fields for account holder name, bank name, account number, and routing number",
-        "Form allows saving and updating bank information",
-        "Displays current bank information when available",
-        "Shows success confirmation after saving bank details"
+        "ProductCard component no longer displays a delete button",
+        "Public users cannot trigger product deletion from the catalog page",
+        "Admin users can still delete products through the SnackManagement admin page"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/pages/BankInformation.tsx",
-          "operation": "create",
-          "description": "Create a new admin page component that displays a form for entering and updating bank account information. The form should include input fields for account holder name, bank name, account number, and routing number. Fetch existing bank account data using the getAllBankAccounts backend method and display it in the form. On form submission, call the addBankAccount backend method with the form values. Display a success toast notification after saving. Use shadcn/ui form components (Card, Input, Button, Label) for consistent styling with the rest of the admin interface."
-        },
-        {
-          "path": "frontend/src/hooks/useQueries.ts",
+          "path": "frontend/src/components/ProductCard.tsx",
           "operation": "modify",
-          "description": "Add two new React Query hooks: useGetAllBankAccounts for fetching bank account data using the getAllBankAccounts backend method, and useAddBankAccount mutation hook for saving bank information using the addBankAccount backend method. Follow the existing pattern in the file for query and mutation hooks, using the actor from useActor."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Register a new route for the bank information page at path '/admin/bank' that renders the BankInformation component. Add the route configuration to the existing router setup alongside the other admin routes."
+          "description": "Remove the delete button, delete confirmation dialog, and all associated delete functionality from the ProductCard component. Keep the image, name, description, price display, and the 'View Details' button intact. This ensures public users viewing the catalog cannot delete products while maintaining all other product browsing capabilities."
         }
       ]
     },
     {
-      "id": "REQ-23",
-      "summary": "Add navigation link to the bank information admin page in the header navigation",
+      "id": "REQ-2",
+      "summary": "Remove the delete button and delete functionality from the ProductDetail page so public users cannot delete products from the detail view",
       "acceptanceCriteria": [
-        "Navigation includes a link to access the bank information page",
-        "Link is accessible from the main header navigation"
+        "ProductDetail page does not display a delete button",
+        "Public users cannot trigger product deletion from the product detail page",
+        "Admin users retain delete capability through the SnackManagement admin page"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/Layout.tsx",
+          "path": "frontend/src/pages/ProductDetail.tsx",
           "operation": "modify",
-          "description": "Add a new navigation button in the header navigation that links to '/admin/bank'. Place the button alongside the existing Admin, Orders, and About buttons. Use the same Button component styling and variant as the other navigation items for consistency. Label the button 'Bank Info' or 'Bank'."
-        }
-      ]
-    },
-    {
-      "id": "REQ-25",
-      "summary": "Add a phone number input field to the checkout form that captures the customer's phone number during order placement",
-      "acceptanceCriteria": [
-        "Checkout form includes a phone number input field",
-        "Phone number is required to complete checkout",
-        "Phone number is submitted with the order"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/Checkout.tsx",
-          "operation": "modify",
-          "description": "Add a phone number input field to the checkout form. Include the field in the form state alongside customerName, customerEmail, and customerAddress. Make the phone number field required. Update the handleCheckout function to pass the customerPhone value to the useCheckout mutation. Use the same Input and Label components from shadcn/ui for consistent styling with the existing form fields."
-        }
-      ]
-    },
-    {
-      "id": "REQ-26",
-      "summary": "Display the customer's phone number in the order confirmation view shown to customers after purchase",
-      "acceptanceCriteria": [
-        "Order confirmation page displays the customer's phone number",
-        "Phone number is clearly visible for pickup reference"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/OrderConfirmation.tsx",
-          "operation": "modify",
-          "description": "Add display of the customer phone number in the order confirmation view. Show the phone number alongside the existing customer name, email, and address fields. Use the same Card and typography styling as the other customer information fields for consistency. The phone number should be displayed in a prominent, easy-to-read format for pickup reference."
-        }
-      ]
-    },
-    {
-      "id": "REQ-27",
-      "summary": "Display the customer's phone number in the admin order management interface for each order to identify customers during pickup",
-      "acceptanceCriteria": [
-        "Order management page shows customer phone number for each order",
-        "Phone number is prominently displayed alongside other order details",
-        "Phone number is visible when viewing order details for pickup coordination"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/OrderManagement.tsx",
-          "operation": "modify",
-          "description": "Add the customer phone number display to the order cards in the admin order management interface. Show the phone number prominently alongside the existing customer name, email, and address information. Use consistent typography and styling with the other customer details. Ensure the phone number is easily visible for quick reference during pickup coordination."
+          "description": "Remove the delete button and all associated delete functionality from the ProductDetail page. Preserve the product image, description, price display, quantity selector, and add-to-cart functionality. This restricts product deletion to the admin-only SnackManagement page while keeping all product viewing and cart features available to public users."
         }
       ]
     }

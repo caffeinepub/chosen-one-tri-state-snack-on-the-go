@@ -20,6 +20,7 @@ export interface CartItem { 'item' : SnackItem, 'quantity' : bigint }
 export type ExternalBlob = Uint8Array;
 export interface Order {
   'id' : bigint,
+  'tip' : [] | [bigint],
   'customerName' : string,
   'customerPhone' : string,
   'customerAddress' : string,
@@ -67,7 +68,10 @@ export interface _SERVICE {
     undefined
   >,
   'addToCart' : ActorMethod<[string, string, bigint], undefined>,
-  'checkout' : ActorMethod<[string, string, string, string, string], bigint>,
+  'checkout' : ActorMethod<
+    [string, string, string, string, string, [] | [bigint]],
+    bigint
+  >,
   'clearCart' : ActorMethod<[string], boolean>,
   'deleteSnackItem' : ActorMethod<[string], boolean>,
   'getAdminOrderManagement' : ActorMethod<[], Array<Order>>,

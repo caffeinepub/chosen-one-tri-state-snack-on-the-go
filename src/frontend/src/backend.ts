@@ -115,6 +115,7 @@ export interface _CaffeineStorageCreateCertificateResult {
 }
 export interface Order {
     id: bigint;
+    tip?: bigint;
     customerName: string;
     customerPhone: string;
     customerAddress: string;
@@ -136,7 +137,7 @@ export interface backendInterface {
     addBankAccount(accountHolderName: string, bankName: string, accountNumber: string, routingNumber: string): Promise<string>;
     addSnackItem(id: string, name: string, description: string, price: bigint, image: ExternalBlob): Promise<void>;
     addToCart(userId: string, itemId: string, quantity: bigint): Promise<void>;
-    checkout(userId: string, customerName: string, customerEmail: string, customerAddress: string, customerPhone: string): Promise<bigint>;
+    checkout(userId: string, customerName: string, customerEmail: string, customerAddress: string, customerPhone: string, tip: bigint | null): Promise<bigint>;
     clearCart(userId: string): Promise<boolean>;
     deleteSnackItem(id: string): Promise<boolean>;
     getAdminOrderManagement(): Promise<Array<Order>>;
@@ -277,17 +278,17 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-    async checkout(arg0: string, arg1: string, arg2: string, arg3: string, arg4: string): Promise<bigint> {
+    async checkout(arg0: string, arg1: string, arg2: string, arg3: string, arg4: string, arg5: bigint | null): Promise<bigint> {
         if (this.processError) {
             try {
-                const result = await this.actor.checkout(arg0, arg1, arg2, arg3, arg4);
+                const result = await this.actor.checkout(arg0, arg1, arg2, arg3, arg4, to_candid_opt_n9(this._uploadFile, this._downloadFile, arg5));
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.checkout(arg0, arg1, arg2, arg3, arg4);
+            const result = await this.actor.checkout(arg0, arg1, arg2, arg3, arg4, to_candid_opt_n9(this._uploadFile, this._downloadFile, arg5));
             return result;
         }
     }
@@ -323,14 +324,14 @@ export class Backend implements backendInterface {
         if (this.processError) {
             try {
                 const result = await this.actor.getAdminOrderManagement();
-                return from_candid_vec_n9(this._uploadFile, this._downloadFile, result);
+                return from_candid_vec_n10(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getAdminOrderManagement();
-            return from_candid_vec_n9(this._uploadFile, this._downloadFile, result);
+            return from_candid_vec_n10(this._uploadFile, this._downloadFile, result);
         }
     }
     async getAllBankAccounts(): Promise<Array<BankAccount>> {
@@ -351,110 +352,110 @@ export class Backend implements backendInterface {
         if (this.processError) {
             try {
                 const result = await this.actor.getAllOrders();
-                return from_candid_vec_n9(this._uploadFile, this._downloadFile, result);
+                return from_candid_vec_n10(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getAllOrders();
-            return from_candid_vec_n9(this._uploadFile, this._downloadFile, result);
+            return from_candid_vec_n10(this._uploadFile, this._downloadFile, result);
         }
     }
     async getAllSnackItems(): Promise<Array<SnackItem>> {
         if (this.processError) {
             try {
                 const result = await this.actor.getAllSnackItems();
-                return from_candid_vec_n18(this._uploadFile, this._downloadFile, result);
+                return from_candid_vec_n19(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getAllSnackItems();
-            return from_candid_vec_n18(this._uploadFile, this._downloadFile, result);
+            return from_candid_vec_n19(this._uploadFile, this._downloadFile, result);
         }
     }
     async getBankAccount(arg0: string): Promise<BankAccount | null> {
         if (this.processError) {
             try {
                 const result = await this.actor.getBankAccount(arg0);
-                return from_candid_opt_n19(this._uploadFile, this._downloadFile, result);
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.getBankAccount(arg0);
-            return from_candid_opt_n19(this._uploadFile, this._downloadFile, result);
-        }
-    }
-    async getCart(arg0: string): Promise<Array<CartItem>> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.getCart(arg0);
-                return from_candid_vec_n12(this._uploadFile, this._downloadFile, result);
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.getCart(arg0);
-            return from_candid_vec_n12(this._uploadFile, this._downloadFile, result);
-        }
-    }
-    async getOrder(arg0: bigint): Promise<Order | null> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.getOrder(arg0);
                 return from_candid_opt_n20(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.getOrder(arg0);
+            const result = await this.actor.getBankAccount(arg0);
             return from_candid_opt_n20(this._uploadFile, this._downloadFile, result);
         }
     }
-    async getSnackItem(arg0: string): Promise<SnackItem | null> {
+    async getCart(arg0: string): Promise<Array<CartItem>> {
         if (this.processError) {
             try {
-                const result = await this.actor.getSnackItem(arg0);
+                const result = await this.actor.getCart(arg0);
+                return from_candid_vec_n13(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getCart(arg0);
+            return from_candid_vec_n13(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getOrder(arg0: bigint): Promise<Order | null> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getOrder(arg0);
                 return from_candid_opt_n21(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.getSnackItem(arg0);
+            const result = await this.actor.getOrder(arg0);
             return from_candid_opt_n21(this._uploadFile, this._downloadFile, result);
         }
     }
+    async getSnackItem(arg0: string): Promise<SnackItem | null> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getSnackItem(arg0);
+                return from_candid_opt_n22(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getSnackItem(arg0);
+            return from_candid_opt_n22(this._uploadFile, this._downloadFile, result);
+        }
+    }
 }
-async function from_candid_CartItem_n13(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _CartItem): Promise<CartItem> {
-    return await from_candid_record_n14(_uploadFile, _downloadFile, value);
+async function from_candid_CartItem_n14(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _CartItem): Promise<CartItem> {
+    return await from_candid_record_n15(_uploadFile, _downloadFile, value);
 }
-async function from_candid_ExternalBlob_n17(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ExternalBlob): Promise<ExternalBlob> {
+async function from_candid_ExternalBlob_n18(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ExternalBlob): Promise<ExternalBlob> {
     return await _downloadFile(value);
 }
-async function from_candid_Order_n10(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Order): Promise<Order> {
-    return await from_candid_record_n11(_uploadFile, _downloadFile, value);
+async function from_candid_Order_n11(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Order): Promise<Order> {
+    return await from_candid_record_n12(_uploadFile, _downloadFile, value);
 }
-async function from_candid_SnackItem_n15(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _SnackItem): Promise<SnackItem> {
-    return await from_candid_record_n16(_uploadFile, _downloadFile, value);
+async function from_candid_SnackItem_n16(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _SnackItem): Promise<SnackItem> {
+    return await from_candid_record_n17(_uploadFile, _downloadFile, value);
 }
 function from_candid__CaffeineStorageRefillResult_n4(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: __CaffeineStorageRefillResult): _CaffeineStorageRefillResult {
     return from_candid_record_n5(_uploadFile, _downloadFile, value);
 }
-function from_candid_opt_n19(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_BankAccount]): BankAccount | null {
+function from_candid_opt_n20(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_BankAccount]): BankAccount | null {
     return value.length === 0 ? null : value[0];
 }
-async function from_candid_opt_n20(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_Order]): Promise<Order | null> {
-    return value.length === 0 ? null : await from_candid_Order_n10(_uploadFile, _downloadFile, value[0]);
+async function from_candid_opt_n21(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_Order]): Promise<Order | null> {
+    return value.length === 0 ? null : await from_candid_Order_n11(_uploadFile, _downloadFile, value[0]);
 }
-async function from_candid_opt_n21(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_SnackItem]): Promise<SnackItem | null> {
-    return value.length === 0 ? null : await from_candid_SnackItem_n15(_uploadFile, _downloadFile, value[0]);
+async function from_candid_opt_n22(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_SnackItem]): Promise<SnackItem | null> {
+    return value.length === 0 ? null : await from_candid_SnackItem_n16(_uploadFile, _downloadFile, value[0]);
 }
 function from_candid_opt_n6(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [boolean]): boolean | null {
     return value.length === 0 ? null : value[0];
@@ -462,8 +463,9 @@ function from_candid_opt_n6(_uploadFile: (file: ExternalBlob) => Promise<Uint8Ar
 function from_candid_opt_n7(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [bigint]): bigint | null {
     return value.length === 0 ? null : value[0];
 }
-async function from_candid_record_n11(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+async function from_candid_record_n12(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     id: bigint;
+    tip: [] | [bigint];
     customerName: string;
     customerPhone: string;
     customerAddress: string;
@@ -472,6 +474,7 @@ async function from_candid_record_n11(_uploadFile: (file: ExternalBlob) => Promi
     customerEmail: string;
 }): Promise<{
     id: bigint;
+    tip?: bigint;
     customerName: string;
     customerPhone: string;
     customerAddress: string;
@@ -481,15 +484,16 @@ async function from_candid_record_n11(_uploadFile: (file: ExternalBlob) => Promi
 }> {
     return {
         id: value.id,
+        tip: record_opt_to_undefined(from_candid_opt_n7(_uploadFile, _downloadFile, value.tip)),
         customerName: value.customerName,
         customerPhone: value.customerPhone,
         customerAddress: value.customerAddress,
         totalAmount: value.totalAmount,
-        items: await from_candid_vec_n12(_uploadFile, _downloadFile, value.items),
+        items: await from_candid_vec_n13(_uploadFile, _downloadFile, value.items),
         customerEmail: value.customerEmail
     };
 }
-async function from_candid_record_n14(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+async function from_candid_record_n15(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     item: _SnackItem;
     quantity: bigint;
 }): Promise<{
@@ -497,11 +501,11 @@ async function from_candid_record_n14(_uploadFile: (file: ExternalBlob) => Promi
     quantity: bigint;
 }> {
     return {
-        item: await from_candid_SnackItem_n15(_uploadFile, _downloadFile, value.item),
+        item: await from_candid_SnackItem_n16(_uploadFile, _downloadFile, value.item),
         quantity: value.quantity
     };
 }
-async function from_candid_record_n16(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+async function from_candid_record_n17(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     id: string;
     name: string;
     description: string;
@@ -518,7 +522,7 @@ async function from_candid_record_n16(_uploadFile: (file: ExternalBlob) => Promi
         id: value.id,
         name: value.name,
         description: value.description,
-        image: await from_candid_ExternalBlob_n17(_uploadFile, _downloadFile, value.image),
+        image: await from_candid_ExternalBlob_n18(_uploadFile, _downloadFile, value.image),
         price: value.price
     };
 }
@@ -534,14 +538,14 @@ function from_candid_record_n5(_uploadFile: (file: ExternalBlob) => Promise<Uint
         topped_up_amount: record_opt_to_undefined(from_candid_opt_n7(_uploadFile, _downloadFile, value.topped_up_amount))
     };
 }
-async function from_candid_vec_n12(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_CartItem>): Promise<Array<CartItem>> {
-    return await Promise.all(value.map(async (x)=>await from_candid_CartItem_n13(_uploadFile, _downloadFile, x)));
+async function from_candid_vec_n10(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_Order>): Promise<Array<Order>> {
+    return await Promise.all(value.map(async (x)=>await from_candid_Order_n11(_uploadFile, _downloadFile, x)));
 }
-async function from_candid_vec_n18(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_SnackItem>): Promise<Array<SnackItem>> {
-    return await Promise.all(value.map(async (x)=>await from_candid_SnackItem_n15(_uploadFile, _downloadFile, x)));
+async function from_candid_vec_n13(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_CartItem>): Promise<Array<CartItem>> {
+    return await Promise.all(value.map(async (x)=>await from_candid_CartItem_n14(_uploadFile, _downloadFile, x)));
 }
-async function from_candid_vec_n9(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_Order>): Promise<Array<Order>> {
-    return await Promise.all(value.map(async (x)=>await from_candid_Order_n10(_uploadFile, _downloadFile, x)));
+async function from_candid_vec_n19(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_SnackItem>): Promise<Array<SnackItem>> {
+    return await Promise.all(value.map(async (x)=>await from_candid_SnackItem_n16(_uploadFile, _downloadFile, x)));
 }
 async function to_candid_ExternalBlob_n8(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ExternalBlob): Promise<_ExternalBlob> {
     return await _uploadFile(value);
@@ -551,6 +555,9 @@ function to_candid__CaffeineStorageRefillInformation_n2(_uploadFile: (file: Exte
 }
 function to_candid_opt_n1(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _CaffeineStorageRefillInformation | null): [] | [__CaffeineStorageRefillInformation] {
     return value === null ? candid_none() : candid_some(to_candid__CaffeineStorageRefillInformation_n2(_uploadFile, _downloadFile, value));
+}
+function to_candid_opt_n9(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: bigint | null): [] | [bigint] {
+    return value === null ? candid_none() : candid_some(value);
 }
 function to_candid_record_n3(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     proposed_top_up_amount?: bigint;

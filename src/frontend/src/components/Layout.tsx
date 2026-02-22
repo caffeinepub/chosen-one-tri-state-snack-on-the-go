@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import { Link, useNavigate, useRouterState } from '@tanstack/react-router';
-import { ShoppingCart, Settings, Package, ClipboardList, Info, Landmark } from 'lucide-react';
+import { ShoppingCart, Settings, Package, ClipboardList, Info, Landmark, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useGetCart } from '../hooks/useQueries';
 import { useUserId } from '../hooks/useCart';
+import { useAdminAuth } from '../hooks/useAdminAuth';
+import PinAuthDialog from './PinAuthDialog';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -15,6 +18,8 @@ export default function Layout({ children }: LayoutProps) {
   const { data: cartItems = [] } = useGetCart(userId);
   const routerState = useRouterState();
   const currentPath = routerState.location.pathname;
+  const { isAuthenticated } = useAdminAuth();
+  const [pinDialogOpen, setPinDialogOpen] = useState(false);
 
   const cartItemCount = cartItems.reduce((sum, item) => sum + Number(item.quantity), 0);
 
@@ -37,6 +42,7 @@ export default function Layout({ children }: LayoutProps) {
           </Link>
           
           <div className="flex items-center gap-2">
+            {/* Customer-facing About link - always visible */}
             <Button
               variant={currentPath === '/about' ? 'default' : 'ghost'}
               size="icon"
@@ -46,42 +52,48 @@ export default function Layout({ children }: LayoutProps) {
               <Info className="h-5 w-5" />
             </Button>
 
-            <Button
-              variant={currentPath === '/snacks' ? 'default' : 'ghost'}
-              size="icon"
-              onClick={() => navigate({ to: '/snacks' })}
-              title="Snacks"
-            >
-              <Package className="h-5 w-5" />
-            </Button>
+            {/* Admin-only links - only visible when authenticated */}
+            {isAuthenticated && (
+              <>
+                <Button
+                  variant={currentPath === '/snacks' ? 'default' : 'ghost'}
+                  size="icon"
+                  onClick={() => navigate({ to: '/snacks' })}
+                  title="Snacks"
+                >
+                  <Package className="h-5 w-5" />
+                </Button>
 
-            <Button
-              variant={currentPath === '/admin/orders' ? 'default' : 'ghost'}
-              size="icon"
-              onClick={() => navigate({ to: '/admin/orders' })}
-              title="Orders"
-            >
-              <ClipboardList className="h-5 w-5" />
-            </Button>
+                <Button
+                  variant={currentPath === '/admin/orders' ? 'default' : 'ghost'}
+                  size="icon"
+                  onClick={() => navigate({ to: '/admin/orders' })}
+                  title="Orders"
+                >
+                  <ClipboardList className="h-5 w-5" />
+                </Button>
 
-            <Button
-              variant={currentPath === '/admin/bank' ? 'default' : 'ghost'}
-              size="icon"
-              onClick={() => navigate({ to: '/admin/bank' })}
-              title="Bank Info"
-            >
-              <Landmark className="h-5 w-5" />
-            </Button>
+                <Button
+                  variant={currentPath === '/admin/bank' ? 'default' : 'ghost'}
+                  size="icon"
+                  onClick={() => navigate({ to: '/admin/bank' })}
+                  title="Bank Info"
+                >
+                  <Landmark className="h-5 w-5" />
+                </Button>
 
-            <Button
-              variant={currentPath === '/admin' ? 'default' : 'ghost'}
-              size="icon"
-              onClick={() => navigate({ to: '/admin' })}
-              title="Admin"
-            >
-              <Settings className="h-5 w-5" />
-            </Button>
+                <Button
+                  variant={currentPath === '/admin' ? 'default' : 'ghost'}
+                  size="icon"
+                  onClick={() => navigate({ to: '/admin' })}
+                  title="Admin"
+                >
+                  <Settings className="h-5 w-5" />
+                </Button>
+              </>
+            )}
             
+            {/* Shopping cart - always visible */}
             <Button
               variant="outline"
               size="icon"
@@ -106,7 +118,7 @@ export default function Layout({ children }: LayoutProps) {
         {children}
       </main>
 
-      <footer className="border-t border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 py-6 mt-12">
+      <footer className="border-t border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 py-6 mt-12 relative">
         <div className="container px-4 text-center">
           <p className="text-sm text-muted-foreground">
             © {new Date().getFullYear()} Chosen One. Built with ❤️ using{' '}
@@ -120,7 +132,18 @@ export default function Layout({ children }: LayoutProps) {
             </a>
           </p>
         </div>
+        
+        {/* Subtle lock icon for admin access - barely visible */}
+        <button
+          onClick={() => setPinDialogOpen(true)}
+          className="absolute bottom-2 right-4 opacity-10 hover:opacity-30 transition-opacity duration-300"
+          aria-label="Admin access"
+        >
+          <Lock className="h-3 w-3 text-muted-foreground" />
+        </button>
       </footer>
+
+      <PinAuthDialog open={pinDialogOpen} onOpenChange={setPinDialogOpen} />
     </div>
   );
 }

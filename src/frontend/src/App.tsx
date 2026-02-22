@@ -3,6 +3,7 @@ import { createRouter, createRoute, createRootRoute, RouterProvider, Outlet } fr
 import { ThemeProvider } from 'next-themes';
 import Layout from './components/Layout';
 import ProductCatalog from './pages/ProductCatalog';
+import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import OrderConfirmation from './pages/OrderConfirmation';
@@ -25,6 +26,12 @@ const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
   component: ProductCatalog,
+});
+
+const productDetailRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/product/$id',
+  component: ProductDetail,
 });
 
 const cartRoute = createRoute({
@@ -77,6 +84,7 @@ const bankRoute = createRoute({
 
 const routeTree = rootRoute.addChildren([
   indexRoute,
+  productDetailRoute,
   cartRoute,
   checkoutRoute,
   orderConfirmationRoute,
