@@ -1,0 +1,16 @@
+{
+  "frontend/src/App.tsx": "Main application component with TanStack Router setup, defining all routes including the new admin route, and wrapping the app with ThemeProvider and Toaster for notifications.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for all backend operations including fetching snack items, managing cart operations, checkout process, retrieving order details, and the new useAddSnackItem mutation for adding products with images.",
+  "frontend/src/hooks/useCart.ts": "Custom hook that generates and persists a unique user ID in localStorage for session-based cart management.",
+  "frontend/src/components/Layout.tsx": "Main layout component with sticky header displaying business name, logo, admin settings icon, shopping cart icon with item count badge, and footer with attribution.",
+  "frontend/src/components/ProductCard.tsx": "Product card component displaying snack item details with image, name, description, price, quantity selector, and add-to-cart functionality with loading states.",
+  "frontend/src/components/CartItem.tsx": "Cart item component showing product thumbnail, name, price, quantity, and subtotal in a compact card layout.",
+  "frontend/src/pages/ProductCatalog.tsx": "Home page displaying hero banner, food truck image, and grid of all available snack items with loading states and empty state handling.",
+  "frontend/src/pages/Cart.tsx": "Shopping cart page showing all cart items, order summary with total, and checkout button with empty cart state handling.",
+  "frontend/src/pages/Checkout.tsx": "Checkout page with customer information form (name, email, address) and order summary, handling order submission and navigation to confirmation.",
+  "frontend/src/pages/OrderConfirmation.tsx": "Order confirmation page displaying order details, customer information, items ordered, and total with success message and navigation back to menu.",
+  "frontend/src/index.css": "Global styles with warm food truck color theme using OKLCH color system, custom Poppins and Pacifico fonts, and design tokens for both light and dark modes.",
+  "frontend/tailwind.config.js": "Tailwind configuration extended with custom warm color palette, Poppins and Pacifico font families, and custom border radius values for the food truck theme.",
+  "frontend/src/components/ImageUpload.tsx": "Reusable image upload component that handles file selection, preview display, conversion to Uint8Array format, and upload progress tracking using ExternalBlob.",
+  "frontend/src/pages/Admin.tsx": "Admin panel page for managing snack items with a form to add new products including image upload with proper type casting for ExternalBlob, and a list view of all existing menu items with their details."
+}

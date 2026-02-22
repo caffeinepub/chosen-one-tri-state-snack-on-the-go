@@ -1,2 +1,3 @@
-# chosen-one-tri-state-snack-on-the-go
-Exported from Caffeine project: Chosen One Tri-State Snack on the Go
+## 
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

@@ -1,0 +1,65 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Add image upload functionality for snack items",
+  "requirements": [
+    {
+      "id": "REQ-6",
+      "summary": "Add an admin interface with image upload capability for snack items",
+      "acceptanceCriteria": [
+        "An admin section or page exists with upload functionality",
+        "Users can select and upload image files for products",
+        "Upload interface includes file selection button and preview of selected image",
+        "Uploaded images are stored and associated with specific product items"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/Admin.tsx",
+          "operation": "create",
+          "description": "Create admin page for managing snack items with image upload functionality. Use the blob-storage component to support uploading product images via ExternalBlob.fromBytes() and tracking upload progress with withUploadProgress(). The page should display a list of existing snack items and provide a form to add new items or update existing ones with name, description, price, and image upload fields. Include file input with preview of selected image before upload. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/ImageUpload.tsx",
+          "operation": "create",
+          "description": "Create reusable image upload component that handles file selection, preview, and conversion to ExternalBlob format. Use the blob-storage component's ExternalBlob.fromBytes() method to convert selected files and withUploadProgress() to track upload percentage. Component should accept current image URL, onChange callback, and display both file input button and image preview with appropriate sizing. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Add React Query mutation hook for adding snack items via the backend's addSnackItem method. The mutation should accept id, name, description, price, and ExternalBlob image parameter, call the backend method, and invalidate the snack items query cache on success to refresh the product catalog."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Register new /admin route in the router configuration that renders the Admin page component. Add route definition alongside existing catalog, cart, checkout, and order-confirmation routes to make the admin interface accessible."
+        },
+        {
+          "path": "frontend/src/components/Layout.tsx",
+          "operation": "modify",
+          "description": "Add navigation link to the admin page in the header section. Include an admin icon or text link that navigates to /admin route, positioned appropriately in the header alongside existing cart icon."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Update ProductCard to display uploaded images with fallback",
+      "acceptanceCriteria": [
+        "Product cards show uploaded images when they exist for an item",
+        "Graceful fallback to placeholder or default image when no upload exists",
+        "Images display correctly with appropriate sizing and aspect ratio"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/ProductCard.tsx",
+          "operation": "modify",
+          "description": "Modify the image source to use item.image.getDirectURL() from the ExternalBlob to display uploaded product images. The blob-storage component provides direct URL access via getDirectURL() for browser-cached streaming. Maintain existing image sizing and aspect ratio, and ensure graceful fallback behavior if image URL is unavailable. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/ProductCatalog.tsx",
+          "operation": "modify",
+          "description": "Ensure snack items fetched from backend include the ExternalBlob image field and are passed correctly to ProductCard components. Verify that the getAllSnackItems query returns items with image data that can be rendered via getDirectURL()."
+        }
+      ]
+    }
+  ]
+}

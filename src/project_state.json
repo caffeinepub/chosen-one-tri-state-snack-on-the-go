@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 5,
+  "summary": "Mobile snack shop app for selling goods on wheels",
+  "architectural_notes": [
+    "Mobile-first design for on-the-go ordering",
+    "Professional and unique UI/UX for food service app"
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-create-a-product-catalog-displaying-snack-items-available-for-sale-with-name-description-price-and-image-for-each-item",
+      "title": "Create a product catalog displaying snack items available for sale with name, description, price, and image for each item",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-shopping-cart-system-allowing-customers-to-add-items-adjust-quantities-and-view-cart-total",
+      "title": "Implement a shopping cart system allowing customers to add items, adjust quantities, and view cart total",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-an-order-checkout-flow-that-captures-customer-contact-information-and-order-details",
+      "title": "Create an order checkout flow that captures customer contact information and order details",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-design-a-professional-unique-mobile-first-interface-with-a-cohesive-food-truck-theme-featuring-warm-appetizing-colors-oranges-reds-yellows-playful-typography-that-evokes-street-food-culture-and-card-based-layouts-that-work-well-on-mobile-screens",
+      "title": "Design a professional, unique mobile-first interface with a cohesive food truck theme featuring warm, appetizing colors (oranges, reds, yellows), playful typography that evokes street food culture, and card-based layouts that work well on mobile screens",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-display-business-branding-with-the-name-chosen-one-tri-state-snack-on-the-go-prominently-in-the-header-and-integrate-generated-food-truck-and-logo-images-as-static-assets",
+      "title": "Display business branding with the name 'Chosen One Tri-State Snack on the Go' prominently in the header and integrate generated food truck and logo images as static assets",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-admin-interface-with-image-upload-capability-that-allows-uploading-product-images-for-snack-items-in-the-catalog",
+      "title": "Add an admin interface with image upload capability that allows uploading product images for snack items in the catalog",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Create mobile snack shop application",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Add upload buttons for items",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Extend the backend to handle image uploads, storing uploaded images and associating them with catalog items by product ID",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Update the ProductCard component to display uploaded images instead of placeholder images when available",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Chosen One Tri-State Snack on the Go",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

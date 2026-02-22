@@ -1,0 +1,82 @@
+{
+  "kind": "build_request",
+  "title": "Add image upload functionality for snack items",
+  "projectName": "Chosen One Tri-State Snack on the Go",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-6",
+      "text": "Add an admin interface with image upload capability that allows uploading product images for snack items in the catalog",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-user-upload-request",
+          "msg-user-yes-confirmation"
+        ],
+        "quotes": [
+          "Add upload buttons for items",
+          "Yes"
+        ]
+      },
+      "acceptanceCriteria": [
+        "An admin section or page exists with upload functionality",
+        "Users can select and upload image files for products",
+        "Upload interface includes file selection button and preview of selected image",
+        "Uploaded images are stored and associated with specific product items"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Extend the backend to handle image uploads, storing uploaded images and associating them with catalog items by product ID",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-user-upload-request",
+          "msg-user-yes-confirmation"
+        ],
+        "quotes": [
+          "Add upload buttons for items"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend accepts image file uploads via a new endpoint or method",
+        "Images are stored persistently in stable storage",
+        "Each image is linked to its corresponding snack item ID",
+        "Backend returns the image data or URL when querying catalog items"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Update the ProductCard component to display uploaded images instead of placeholder images when available",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-user-upload-request"
+        ],
+        "quotes": [
+          "Add upload buttons for items"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Product cards show uploaded images when they exist for an item",
+        "Graceful fallback to placeholder or default image when no upload exists",
+        "Images display correctly with appropriate sizing and aspect ratio"
+      ]
+    }
+  ],
+  "constraints": [
+    "Maintain single-actor architecture in backend/main.mo",
+    "Do not modify immutable frontend paths: useInternetIdentity.ts, useInternetIdentity.tsx, useActor.ts, main.tsx, or components/ui",
+    "Preserve existing cart and checkout functionality"
+  ],
+  "nonGoals": [
+    "Multi-vendor product management",
+    "Advanced image editing or filtering",
+    "External cloud storage integration",
+    "Bulk image upload from third-party sources"
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}
